@@ -17,7 +17,7 @@ public:
 
 
 	// Default constructor
-	Cinema() {
+	Location() {
 
 		nr_seats = 20;
 		nr_rows = 0;
@@ -26,7 +26,7 @@ public:
 	}
 
 	//constructor with parameters
-	Cinema(int nr_seats, int nr_rows, const char* zones, int nrOfSeatsPerRow) {
+	Location(int nr_seats, int nr_rows, const char* zones, int nrOfSeatsPerRow) {
 		this->nr_seats = nr_seats;
 
 		this->nr_rows = nr_rows;
@@ -38,7 +38,7 @@ public:
 
 	//copy constructor
 
-	Cinema(const Cinema& other) {
+	Location(const Location& other) {
 
 		this->nr_seats = other.nr_seats;
 		this->nr_rows = other.nr_rows;
@@ -56,7 +56,7 @@ public:
 	}
 
 	//destructor
-	~Cinema() {
+	~Location() {
 		if (this->zones != NULL) {
 			delete[]this->zones;
 			this->zones = nullptr;
@@ -121,10 +121,7 @@ public:
 
 	//////////de adaugat locationName
 
-	Cinema operator+(const Cinema& sum) {
-
-
-	}
+	
 	//////// de adaugat operator +=
 
 };
@@ -146,9 +143,9 @@ class Ticket {
 int main() {
 
 	//cinema object
-	Cinema c1(200, 200, "vip", 200);//constructor with parameters
-	Cinema c2 = c1;//copy constructor
-	Cinema c3;//default constructor
+	Location c1(200, 200, "vip", 200);//constructor with parameters
+	Location c2 = c1;//copy constructor
+	Location c3;//default constructor
 
 	cout << "Number of seats in c3 is: " << c3.getnr_seats() << endl; //test def ctor
 
