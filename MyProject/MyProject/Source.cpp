@@ -26,7 +26,7 @@ public:
 	}
 
 	//constructor with parameters
-	Location(int nr_seats, int nr_rows, const char* zones, int nrOfSeatsPerRow) {
+	Location(int nr_seats, int nr_rows, const char* zones,  const char* locationName) {
 		this->nr_seats = nr_seats;
 
 		this->nr_rows = nr_rows;
@@ -34,7 +34,10 @@ public:
 		this->zones = new char[strlen(zones) + 1];
 		strcpy_s(this->zones, strlen(zones) + 1, zones);
 
-	}   //////////de adaugat locationName
+		this->locationName = new char[strlen(locationName) + 1];
+		strcpy_s(this->locationName, strlen(locationName) + 1, locationName);
+
+	}   
 
 	//copy constructor
 
@@ -53,6 +56,14 @@ public:
 			this->zones = nullptr;
 		}//////////de adaugat locationName
 
+		if (other.locationName != NULL) {
+			this->locationName = new char[strlen(other.locationName) + 1];
+			strcpy_s(this->locationName, strlen(other.locationName) + 1, other.locationName);
+		}
+		else {
+			this->locationName = nullptr;
+		}
+
 	}
 
 	//destructor
@@ -61,7 +72,11 @@ public:
 			delete[]this->zones;
 			this->zones = nullptr;
 		}
-	}//////////de adaugat locationName
+		if (this->locationName != NULL) {
+			delete[]this->locationName;
+			this->locationName = nullptr;
+		}
+	}
 
 	//mathods:
 
@@ -80,7 +95,13 @@ public:
 		strcpy_s(zone, strlen(this->zones) + 1, this->zones);
 		return zone;
 	}
-	//////////de adaugat locationName
+
+	const char* getlocationName() {
+		char* locName = new char[strlen(this->locationName) + 1];
+		strcpy_s(locName, strlen(locationName) + 1, this->locationName);
+		return locName;
+	}
+	
 
 	//setters
 
@@ -119,7 +140,17 @@ public:
 		}
 	}
 
-	//////////de adaugat locationName
+	void setlocationName(const char* newlocationName)
+	{
+		if (this->locationName != nullptr) {
+			{
+				delete[] this->locationName;
+			}
+			locationName = new char[strlen(newlocationName) + 1];
+			strcpy_s(locationName, strlen(newlocationName) + 1, newlocationName);
+		}
+	}
+	
 
 	
 	//////// de adaugat operator +=
@@ -142,38 +173,34 @@ class Ticket {
 
 int main() {
 
-	//cinema object
-	Location c1(200, 200, "vip", 200);//constructor with parameters
+	//location object
+	Location c1(200, 200, "vip","sala palatului");//constructor with parameters
 	Location c2 = c1;//copy constructor
 	Location c3;//default constructor
 
 	cout << "Number of seats in c3 is: " << c3.getnr_seats() << endl; //test def ctor
 
-	////cinema details
-	//cout << "Number of seats: " << c1.getnr_seats() << endl;
-	//cout << "Number of rows: " << c1.getnr_rows() << endl;
-	//cout << "Zones: " << c1.getzones() << endl;
-	//cout << "Number of seats per row: " << c1.getnrOfSeatsPerRow() << endl;
-
-	//c1.setnr_seats(400);
-	//c1.setnr_rows(300);
-	//c1.setzones("normal");
-	//c1.setnrOfSeatsPerRow(300);
+	////location details
+	cout << "Number of seats: " << c1.getnr_seats() << endl;
+	cout << "Number of rows: " << c1.getnr_rows() << endl;
+	cout << "Zones: " << c1.getzones() << endl;
+	cout<<"Location name: "<<c1.getlocationName()<<endl;
+	
+	
+	c1.setnr_seats(400);
+	c1.setnr_rows(300);
+	c1.setzones("normal");
+	c1.setlocationName("tnb");
+	
 
 	////new values
-	//cout << "\nUpdated nr of seats: " << c1.getnr_seats() << endl;
-	//cout << "Updated nr of rows: " << c1.getnr_rows() << endl;
-	//cout << "Updated zone: " << c1.getzones() << endl;
-	//cout << "Updated nrOfSeatsPerRow" << c1.getnrOfSeatsPerRow() << endl;
+	cout << "\nUpdated nr of seats: " << c1.getnr_seats() << endl;
+	cout << "Updated nr of rows: " << c1.getnr_rows() << endl;
+	cout << "Updated zone: " << c1.getzones() << endl;
+	cout<<"Updated location name: "<<c1.getlocationName()<<endl;
+	
 
-	////method 1 result
-	//cout << "\nTotal number of seats: " << c1.TotalSeats() << endl;
-
-	////method 2 result
-	//cout << "\nIs cinema full? " << (c1.CinemaFull() ? "Yes" : "No") << endl;
-
-	////negation operator "!"
-	//cout << "\nIs cinema empty?" << (!c1 ? "Yes" : "No") << endl;
+	
 
 
 	return 0;
