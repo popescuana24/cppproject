@@ -5,7 +5,7 @@
 using namespace std;
 
 
-class Cinema { //schimba in Location
+class Location { //schimba in Location
 private:
 	int nr_seats;
 	int nr_rows;
