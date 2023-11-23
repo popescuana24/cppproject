@@ -1,24 +1,28 @@
-#include <iostream> 
+#include <iostream>
 #include <string>
-#define _CRT_SECURE_NO_WARNINGS
+
 
 using namespace std;
 
 
-class Cinema {
+class Cinema { //schimba in Location
 private:
 	int nr_seats;
 	int nr_rows;
 	char* zones;
-	int nrOfSeatsPerRow;
+	char* locationName;
+
+	//adauga address
 public:
+
 
 	// Default constructor
 	Cinema() {
-		nr_seats = 0;
+
+		nr_seats = 20;
 		nr_rows = 0;
 		zones = nullptr;
-		nrOfSeatsPerRow = 0;
+		locationName = NULL;
 	}
 
 	//constructor with parameters
@@ -30,8 +34,7 @@ public:
 		this->zones = new char[strlen(zones) + 1];
 		strcpy_s(this->zones, strlen(zones) + 1, zones);
 
-		this->nrOfSeatsPerRow = nrOfSeatsPerRow;
-	}
+	}   //////////de adaugat locationName
 
 	//copy constructor
 
@@ -48,9 +51,8 @@ public:
 		else {
 			// If other.zones is NULL, assign nullptr to this->zones
 			this->zones = nullptr;
-		}
+		}//////////de adaugat locationName
 
-		this->nrOfSeatsPerRow = other.nrOfSeatsPerRow;
 	}
 
 	//destructor
@@ -59,7 +61,9 @@ public:
 			delete[]this->zones;
 			this->zones = nullptr;
 		}
-	}
+	}//////////de adaugat locationName
+
+	//mathods:
 
 
 	//getters
@@ -76,10 +80,7 @@ public:
 		strcpy_s(zone, strlen(this->zones) + 1, this->zones);
 		return zone;
 	}
-
-	int getnrOfSeatsPerRow() {
-		return this->nrOfSeatsPerRow;
-	}
+	//////////de adaugat locationName
 
 	//setters
 
@@ -104,15 +105,6 @@ public:
 	}
 
 
-	void setnrOfSeatsPerRow(int z) {
-		if (z > 0) {
-			nrOfSeatsPerRow = z;
-		}
-		else {
-			cout << "Invalid number of seats per row!" << endl;
-
-		}
-	}
 	void setzones(const char* newzone)
 	{
 		if (this->zones != nullptr) {
@@ -125,26 +117,31 @@ public:
 		else {
 			cout << "Invalid!" << endl;
 		}
+	}
+
+	//////////de adaugat locationName
+
+	Cinema operator+(const Cinema& sum) {
 
 
 	}
-
-	//method 1 to calculate the total number of seats
-	int TotalSeats() {
-		return nrOfSeatsPerRow * nr_rows;
-	}
-
-	//method 2 
-	bool CinemaFull() {
-		return TotalSeats() == 0;
-	}
-
-	//negation operator "!"
-	bool operator!() {
-		return TotalSeats() == 0;
-	}
+	//////// de adaugat operator +=
 
 };
+
+class Event {
+	//date& time
+	//location :address
+	//name of the event
+
+};
+
+class Ticket {
+
+};
+
+//adaugat clasa pt date&time
+
 
 int main() {
 
@@ -153,31 +150,33 @@ int main() {
 	Cinema c2 = c1;//copy constructor
 	Cinema c3;//default constructor
 
-	//cinema details
-	cout << "Number of seats: " << c1.getnr_seats() << endl;
-	cout << "Number of rows: " << c1.getnr_rows() << endl;
-	cout << "Zones: " << c1.getzones() << endl;
-	cout << "Number of seats per row: " << c1.getnrOfSeatsPerRow() << endl;
+	cout << "Number of seats in c3 is: " << c3.getnr_seats() << endl; //test def ctor
 
-	c1.setnr_seats(400);
-	c1.setnr_rows(300);
-	c1.setzones("normal");
-	c1.setnrOfSeatsPerRow(300);
+	////cinema details
+	//cout << "Number of seats: " << c1.getnr_seats() << endl;
+	//cout << "Number of rows: " << c1.getnr_rows() << endl;
+	//cout << "Zones: " << c1.getzones() << endl;
+	//cout << "Number of seats per row: " << c1.getnrOfSeatsPerRow() << endl;
 
-	//new values
-	cout << "\nUpdated nr of seats: " << c1.getnr_seats() << endl;
-	cout << "Updated nr of rows: " << c1.getnr_rows() << endl;
-	cout << "Updated zone: " << c1.getzones() << endl;
-	cout << "Updated nrOfSeatsPerRow" << c1.getnrOfSeatsPerRow() << endl;
+	//c1.setnr_seats(400);
+	//c1.setnr_rows(300);
+	//c1.setzones("normal");
+	//c1.setnrOfSeatsPerRow(300);
 
-	//method 1 result
-	cout << "\nTotal number of seats: " << c1.TotalSeats() << endl;
+	////new values
+	//cout << "\nUpdated nr of seats: " << c1.getnr_seats() << endl;
+	//cout << "Updated nr of rows: " << c1.getnr_rows() << endl;
+	//cout << "Updated zone: " << c1.getzones() << endl;
+	//cout << "Updated nrOfSeatsPerRow" << c1.getnrOfSeatsPerRow() << endl;
 
-	//method 2 result
-	cout << "\nIs cinema full? " << (c1.CinemaFull() ? "Yes" : "No") << endl;
+	////method 1 result
+	//cout << "\nTotal number of seats: " << c1.TotalSeats() << endl;
 
-	//negation operator "!"
-	cout<<"\nIs cinema empty?"<<(!c1 ? "Yes" : "No") << endl;
+	////method 2 result
+	//cout << "\nIs cinema full? " << (c1.CinemaFull() ? "Yes" : "No") << endl;
+
+	////negation operator "!"
+	//cout << "\nIs cinema empty?" << (!c1 ? "Yes" : "No") << endl;
 
 
 	return 0;
