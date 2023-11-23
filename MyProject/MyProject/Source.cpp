@@ -7,10 +7,10 @@ using namespace std;
 
 class Location { 
 private:
-	int nr_seats;
-	int nr_rows;
-	char* zones;
-	char* locationName;
+	int nr_seats;//nr total locuri
+	int nr_rows;//nr randuri
+	char* zones;//zonele
+	int nrOfSeatsPerRow;
 
 	//adauga address
 public:
@@ -22,11 +22,11 @@ public:
 		nr_seats = 0;
 		nr_rows = 0;
 		zones = nullptr;
-		locationName = NULL;
+		nrOfSeatsPerRow=0;
 	}
 
 	//constructor with parameters
-	Location(int nr_seats, int nr_rows, const char* zones,  const char* locationName) {
+	Location(int nr_seats, int nr_rows, const char* zones,  int nrOfSeatsPerRow) {
 		this->nr_seats = nr_seats;
 
 		this->nr_rows = nr_rows;
@@ -34,8 +34,7 @@ public:
 		this->zones = new char[strlen(zones) + 1];
 		strcpy_s(this->zones, strlen(zones) + 1, zones);
 
-		this->locationName = new char[strlen(locationName) + 1];
-		strcpy_s(this->locationName, strlen(locationName) + 1, locationName);
+		this->nrOfSeatsPerRow = nrOfSeatsPerRow;
 
 	}   
 
@@ -56,13 +55,7 @@ public:
 			this->zones = nullptr;
 		}//////////de adaugat locationName
 
-		if (other.locationName != NULL) {
-			this->locationName = new char[strlen(other.locationName) + 1];
-			strcpy_s(this->locationName, strlen(other.locationName) + 1, other.locationName);
-		}
-		else {
-			this->locationName = nullptr;
-		}
+		this->nrOfSeatsPerRow = other.nrOfSeatsPerRow;
 
 	}
 
@@ -72,13 +65,10 @@ public:
 			delete[]this->zones;
 			this->zones = nullptr;
 		}
-		if (this->locationName != NULL) {
-			delete[]this->locationName;
-			this->locationName = nullptr;
-		}
+		
 	}
 
-	//mathods:
+	
 
 
 	//getters
@@ -96,10 +86,8 @@ public:
 		return zone;
 	}
 
-	const char* getlocationName() {
-		char* locName = new char[strlen(this->locationName) + 1];
-		strcpy_s(locName, strlen(locationName) + 1, this->locationName);
-		return locName;
+	int getnrOfSeatsPerRow() {
+		return this->nrOfSeatsPerRow;
 	}
 	
 
@@ -140,14 +128,13 @@ public:
 		}
 	}
 
-	void setlocationName(const char* newlocationName)
-	{
-		if (this->locationName != nullptr) {
-			{
-				delete[] this->locationName;
-			}
-			locationName = new char[strlen(newlocationName) + 1];
-			strcpy_s(locationName, strlen(newlocationName) + 1, newlocationName);
+	void setnrOfSeatsPerRow(int z) {
+		if (z > 0) {
+			nrOfSeatsPerRow = z;
+		}
+		else {
+			cout << "Invalid number of rows!" << endl;
+
 		}
 	}
 	
@@ -158,15 +145,19 @@ public:
 };
 
 class Event {
-	//date
-	//location :address
-	//name of the event
+private:
+
+	string nameEvent;
+
+	
+public: 
+	
 
 
 
-};
+  };
 
-class Ticket {
+class TicketGenerator {
 
 };
 class Date {
@@ -177,8 +168,10 @@ private:
 	int hour;
 	int minute;
 public:
-	//constructor
+	//constructor with parameters
 	Date(int d, int m, int y, int h, int mi) :day(d), month(m), year(y), hour(h), minute(mi) {}
+
+	
 
 	//setters
 	void setDate(int d, int m, int y, int h, int mi) {
@@ -247,23 +240,23 @@ public:
 
 };
 
-//adaugat clasa pt date
+
 
 
 int main() {
 
 	//location object
-	Location c1(200, 200, "vip","sala palatului");//constructor with parameters
+	Location c1(100, 50, "vip",20);//constructor with parameters
 	Location c2 = c1;//copy constructor
 	Location c3;//default constructor
 
-	cout << "Number of seats in c3 is: " << c3.getnr_seats() << endl; //test def ctor
+	//cout << "Number of seats in c3 is: " << c3.getnr_seats() << endl; //test def ctor
 
 	////location details
-	cout << "Number of seats: " << c1.getnr_seats() << endl;
-	cout << "Number of rows: " << c1.getnr_rows() << endl;
+	cout << " Total number of seats: " << c1.getnr_seats() << endl;
+	cout << "Total number of rows: " << c1.getnr_rows() << endl;
 	cout << "Zones: " << c1.getzones() << endl;
-	cout<<"Location name: "<<c1.getlocationName()<<endl;
+	cout<<"Number of seats per row: "<<c1.getnrOfSeatsPerRow()<<endl;
 
 	Date date(0, 0, 0, 0, 0);
 
@@ -293,21 +286,16 @@ int main() {
 
 	
 	
-	c1.setnr_seats(400);
-	c1.setnr_rows(300);
-	c1.setzones("normal");
-	c1.setlocationName("tnb");
-	
+	//c1.setnr_seats(400);
+	//c1.setnr_rows(300);
+	//c1.setzones("normal");
+	//c1.setlocationName("tnb");
+	//
 
-	////new values
-	cout << "\nUpdated nr of seats: " << c1.getnr_seats() <<endl;
-	cout << "Updated nr of rows: " << c1.getnr_rows() << endl;
-	cout << "Updated zone: " << c1.getzones() << endl;
-	cout<<"Updated location name: "<<c1.getlocationName()<<endl;
-	
-
-	
-
-
-	return 0;
+	//////new values
+	//cout << "\nUpdated nr of seats: " << c1.getnr_seats() <<endl;
+	//cout << "Updated nr of rows: " << c1.getnr_rows() << endl;
+	//cout << "Updated zone: " << c1.getzones() << endl;
+	//cout<<"Updated location name: "<<c1.getlocationName()<<endl;
+	//return 0;
 }
