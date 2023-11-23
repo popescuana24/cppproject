@@ -5,7 +5,7 @@
 using namespace std;
 
 
-class Location { //schimba in Location
+class Location { 
 private:
 	int nr_seats;
 	int nr_rows;
@@ -19,7 +19,7 @@ public:
 	// Default constructor
 	Location() {
 
-		nr_seats = 20;
+		nr_seats = 0;
 		nr_rows = 0;
 		zones = nullptr;
 		locationName = NULL;
@@ -158,17 +158,96 @@ public:
 };
 
 class Event {
-	//date& time
+	//date
 	//location :address
 	//name of the event
+
+
 
 };
 
 class Ticket {
 
 };
+class Date {
+private:
+	int day;
+	int month;
+	int year;
+	int hour;
+	int minute;
+public:
+	//constructor
+	Date(int d, int m, int y, int h, int mi) :day(d), month(m), year(y), hour(h), minute(mi) {}
 
-//adaugat clasa pt date&time
+	//setters
+	void setDate(int d, int m, int y, int h, int mi) {
+		day = d;
+		month = m;
+		year = y;
+		hour = h;
+		minute = mi;
+	}
+
+	//getters
+	int getDay() const{
+		return day;
+
+	}
+
+	int getMonth() const {
+		return month;
+	}
+
+	int getYear() const {
+		return year;
+	}
+
+	int getHour() {
+		return hour;
+    }
+	int getMinute() {
+		return minute;
+	}
+
+	//here we validate if the date is VALID
+	bool isValidDate() const {
+		//we check the day
+		if (day < 1 || day>31)
+			return false;
+		//we check the month 
+		if (month < 1 || month>12)
+			return  false;
+		//for months with 30 days
+		if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)
+			return false;
+		//verification for month: february
+		if (month == 2) 
+		{
+			// Check for leap year
+			if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+				if (day > 29)
+					return false;
+			}
+			else {
+				if (day > 28)
+					return false;
+			}
+		}
+
+		//check the hour
+		if (hour < 1 || hour>24)
+			return false;
+		//check the minute
+		if (minute < 1 || minute>60)
+			return false;
+
+		return true;
+	}
+
+};
+
+//adaugat clasa pt date
 
 
 int main() {
