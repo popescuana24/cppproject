@@ -264,6 +264,33 @@ int main() {
 	cout << "Number of rows: " << c1.getnr_rows() << endl;
 	cout << "Zones: " << c1.getzones() << endl;
 	cout<<"Location name: "<<c1.getlocationName()<<endl;
+
+	Date date(0, 0, 0, 0, 0);
+
+	// Set the date
+	int day, month, year, hour, minute;
+	cout << "Input day: ";
+	cin >> day;
+	cout << "Input month: ";
+	cin >> month;
+	cout << "Input year: ";
+	cin >> year;
+	cout << "Input hour: ";
+	cin >> hour;
+	cout << "input minute: ";
+	cin >> minute;
+
+	date.setDate(day, month, year, hour, minute);
+
+	// Get and display the date
+	cout << "Date: " << date.getDay() << "/" << date.getMonth() << "/" << date.getYear() << ", " << date.getHour() <<":"<< date.getMinute() << endl;
+
+	// Validate the date
+	if (date.isValidDate())
+		cout << "The date is valid." << endl;
+	else
+		cout << "The date is invalid." << endl;
+
 	
 	
 	c1.setnr_seats(400);
@@ -273,7 +300,7 @@ int main() {
 	
 
 	////new values
-	cout << "\nUpdated nr of seats: " << c1.getnr_seats() << endl;
+	cout << "\nUpdated nr of seats: " << c1.getnr_seats() <<endl;
 	cout << "Updated nr of rows: " << c1.getnr_rows() << endl;
 	cout << "Updated zone: " << c1.getzones() << endl;
 	cout<<"Updated location name: "<<c1.getlocationName()<<endl;
