@@ -7,12 +7,13 @@ using namespace std;
 
 class Location { 
 private:
-	int nr_seats;//nr total locuri
+	int nr_seats=0;//nr total locuri
 	int nr_rows;//nr randuri
 	char* zones;//zonele
 	int nrOfSeatsPerRow;
 
 	//adauga address
+public: static const int MIN_SEATS = 5;
 public:
 
 
@@ -94,8 +95,8 @@ public:
 	//setters
 
 	void setnr_seats(int x) {
-		if (x > 0) {
-			nr_seats = x;
+		if (x >=MIN_SEATS) {
+			this->nr_seats = x;
 		}
 		else {
 			throw  exception("Invalid number of seats!");
@@ -144,25 +145,33 @@ public:
 
 };
 class Date {
-private:
+protected:
 	int day;
 	int month;
 	int year;
 	int hour;
 	int minute;
 public:
+	//default constructor
+	Date() {
+		day = 0;
+		month = 0;
+		year = 0;
+		hour = 0;
+		minute = 0;
+	}
 	//constructor with parameters
-	Date(int d, int m, int y, int h, int mi) :day(d), month(m), year(y), hour(h), minute(mi) {}
+	Date(int day, int month, int year, int hour, int minute) :day(day), month(month), year(year), hour(hour), minute(minute) {}
 
 
 
 	//setters
-	void setDate(int d, int m, int y, int h, int mi) {
-		day = d;
-		month = m;
-		year = y;
-		hour = h;
-		minute = mi;
+	void setDate(int day, int month, int year, int hour, int minute) {
+		day = day;
+		month = month;
+		year = year;
+		hour = hour;
+		minute = minute;
 	}
 
 	//getters
@@ -233,9 +242,12 @@ public:
 	Event()   {
 		eventName = "";
 	}
-	//constructor
+	//constructor with parameters
 	Event (string eventName) {
 		this->eventName = eventName;
+		
+
+
 	}
      
 
@@ -264,7 +276,7 @@ class TicketGenerator {
 int main() {
 
 	//location object
-	Location c1(100, 50, "vip",20);//constructor with parameters
+	Location c1(5, 50, "vip",20);//constructor with parameters
 	Location c2 = c1;//copy constructor
 	Location c3;//default constructor
 
@@ -302,7 +314,7 @@ int main() {
 	else
 		cout << "The date is invalid." << endl;
 
-	
+
 
 	
 	
