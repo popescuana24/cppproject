@@ -143,23 +143,6 @@ public:
 	//////// de adaugat operator +=
 
 };
-
-class Event {
-private:
-
-	string nameEvent;
-
-	
-public: 
-	
-
-
-
-  };
-
-class TicketGenerator {
-
-};
 class Date {
 private:
 	int day;
@@ -171,7 +154,7 @@ public:
 	//constructor with parameters
 	Date(int d, int m, int y, int h, int mi) :day(d), month(m), year(y), hour(h), minute(mi) {}
 
-	
+
 
 	//setters
 	void setDate(int d, int m, int y, int h, int mi) {
@@ -183,7 +166,7 @@ public:
 	}
 
 	//getters
-	int getDay() const{
+	int getDay() const {
 		return day;
 
 	}
@@ -198,7 +181,7 @@ public:
 
 	int getHour() {
 		return hour;
-    }
+	}
 	int getMinute() {
 		return minute;
 	}
@@ -215,7 +198,7 @@ public:
 		if ((month == 4 || month == 6 || month == 9 || month == 11) && day > 30)
 			return false;
 		//verification for month: february
-		if (month == 2) 
+		if (month == 2)
 		{
 			// Check for leap year
 			if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
@@ -236,7 +219,42 @@ public:
 			return false;
 
 		return true;
+	};
+
+
+class Event {
+private:
+
+	string eventName;
+	
+	
+public: 
+	//default constructor 
+	Event()   {
+		eventName = "";
 	}
+	//constructor
+	Event (string eventName) {
+		this->eventName = eventName;
+	}
+     
+
+	//setters
+	void seteventName(string eventName) {
+		eventName = eventName;
+	}
+
+	//getters
+	string geteventName() const {
+		return eventName;
+	}
+
+  };
+
+class TicketGenerator {
+
+};
+
 
 };
 
@@ -283,6 +301,8 @@ int main() {
 		cout << "The date is valid." << endl;
 	else
 		cout << "The date is invalid." << endl;
+
+	
 
 	
 	
