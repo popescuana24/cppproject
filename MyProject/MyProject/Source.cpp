@@ -320,10 +320,10 @@ public:
 
 	// Overloading stream extraction operator >>
 	friend istream& operator>>(istream& in, Event& event) {
-		cout << "\nEnter event name: ";
+		cout << "\nEnter the event name: ";
 		getline(in>> ws, event.eventName);
 
-		cout << "\nEnter event date: "<<endl;
+		cout << "\nEnter the event date: "<<endl;
 		in >> event.eventDate;
 
 		return in;
@@ -337,7 +337,7 @@ public:
 class generateticket {
 
 public:
-	// Method to generate a random ticket ID
+	//  generate a random ticket ID
 	static int generateID() {
 		srand(static_cast<unsigned int>(time(0)));
 		return rand() % 10000; 
