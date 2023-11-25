@@ -145,7 +145,7 @@ public:
 
 };
 class Date {
-protected:
+private:
 	int day;
 	int month;
 	int year;
@@ -161,17 +161,17 @@ public:
 		minute = 0;
 	}
 	//constructor with parameters
-	Date(int day, int month, int year, int hour, int minute) :day(day), month(month), year(year), hour(hour), minute(minute) {}
+	Date(int d, int m, int y, int h, int mi) :day(d), month(m), year(y), hour(h), minute(mi) {}
 
 
 
 	//setters
 	void setDate(int day, int month, int year, int hour, int minute) {
-		day = day;
-		month = month;
-		year = year;
-		hour = hour;
-		minute = minute;
+		this->day = day;
+		this->month = month;
+		this->year = year;
+		this->hour = hour;
+		this->minute = minute;
 	}
 
 	//getters
@@ -231,7 +231,7 @@ public:
 	};
 
 
-class Event {
+class Event: public Date {
 private:
 
 	string eventName;
@@ -243,17 +243,12 @@ public:
 		eventName = "";
 	}
 	//constructor with parameters
-	Event (string eventName) {
-		this->eventName = eventName;
-		
-
-
-	}
+	Event (string eventName,int day, int month, int year, int hour, int minute):Date(d, m,  y,  h,  mi), eventName(eventName) {}
      
 
 	//setters
 	void seteventName(string eventName) {
-		eventName = eventName;
+		this->eventName = eventName;
 	}
 
 	//getters
@@ -263,12 +258,7 @@ public:
 
   };
 
-class TicketGenerator {
 
-};
-
-
-};
 
 
 
@@ -314,7 +304,7 @@ int main() {
 	else
 		cout << "The date is invalid." << endl;
 
-
+	
 
 	
 	
