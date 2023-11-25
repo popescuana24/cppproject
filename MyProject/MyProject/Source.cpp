@@ -139,9 +139,28 @@ public:
 		}
 	}
 	
+	//overloading operator +=
+	Location& operator+=(int addSeats) {
+		if (addSeats > 0) {
+			nr_seats += addSeats;
+		}
+		else {
+			throw exception("Invalid number of additional seats!");
+		}
+		return *this;
+	}
 
+	//overloading operator-=
+	Location& operator-=(int removeSeats) {
+		if (removeSeats > 0) {
+			nr_seats -= removeSeats;
+		}
+		else {
+			throw exception("Invalid number of additional seats!");
+		}
+		return *this;
+	}
 	
-	//////// de adaugat operator +=
 
 };
 class Date {
@@ -279,24 +298,42 @@ public:
   };
 
 
+class generateticket {
 
+};
 
 
 
 int main() {
 
 	//location object
-	Location c1(5, 50, "vip",20);//constructor with parameters
+	Location c1(200, 50, "vip",4);//constructor with parameters
 	Location c2 = c1;//copy constructor
 	Location c3;//default constructor
 
 	////location details
-	cout << " Total number of seats: " << c1.getnr_seats() << endl;
+	cout << "Total number of seats: " << c1.getnr_seats() << endl;
 	cout << "Total number of rows: " << c1.getnr_rows() << endl;
 	cout << "Zones: " << c1.getzones() << endl;
 	cout<<"Number of seats per row: "<<c1.getnrOfSeatsPerRow()<<endl; 
 
 	cout << "Number of seats in c3 is: " << c3.getnr_seats() << endl; //test default  constructor
+
+	//operator +=
+	Location c4;
+	c4.setnr_seats(10);
+	cout << "Initial number of seats: " << c4.getnr_seats() << endl;
+
+	c4 += 5; // Adding 5 more seats
+	cout << "Updated number of seats: " << c4.getnr_seats() << endl;
+
+	//operator -=
+	Location c5;
+	c5.setnr_seats(10);
+	cout << "Initial number of seats: " << c5.getnr_seats() << endl;
+
+	c5 -= 5;//removing 5 seats
+	cout << "Updated number of seats: " << c5.getnr_seats()<< endl;
 
 	
 	Date date(0, 0, 0, 0, 0);
