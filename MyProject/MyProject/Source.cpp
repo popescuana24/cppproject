@@ -163,7 +163,16 @@ public:
 	//constructor with parameters
 	Date(int d, int m, int y, int h, int mi) :day(d), month(m), year(y), hour(h), minute(mi) {}
 
+	//copy constructor
 
+	Date(const Date& other) {
+
+		this->day = other.day;
+		this->month = other.month;
+		this->year = other.year;
+		this->hour = other.hour;
+		this->minute = other.minute;
+	}
 
 	//setters
 	void setDate(int day, int month, int year, int hour, int minute) {
@@ -227,11 +236,13 @@ public:
 		if (minute < 1 || minute>60)
 			return false;
 
+
 		return true;
+	}
 	};
 
 
-class Event: public Date {
+class Event {
 private:
 
 	string eventName;
@@ -243,12 +254,19 @@ public:
 		eventName = "";
 	}
 	//constructor with parameters
-	Event (string eventName,int day, int month, int year, int hour, int minute):Date(d, m,  y,  h,  mi), eventName(eventName) {}
+	Event (string eventName): eventName(eventName) {}
+
+	//copy constructor
+	Event(const Event& other) {
+		this->eventName = eventName;
+	}
      
 
 	//setters
-	void seteventName(string eventName) {
+	void seteventName(const string& eventName) {
 		this->eventName = eventName;
+		
+		
 	}
 
 	//getters
@@ -256,6 +274,8 @@ public:
 		return eventName;
 	}
 
+	
+		
   };
 
 
@@ -270,16 +290,18 @@ int main() {
 	Location c2 = c1;//copy constructor
 	Location c3;//default constructor
 
-	//cout << "Number of seats in c3 is: " << c3.getnr_seats() << endl; //test def ctor
-
 	////location details
 	cout << " Total number of seats: " << c1.getnr_seats() << endl;
 	cout << "Total number of rows: " << c1.getnr_rows() << endl;
 	cout << "Zones: " << c1.getzones() << endl;
-	cout<<"Number of seats per row: "<<c1.getnrOfSeatsPerRow()<<endl;
+	cout<<"Number of seats per row: "<<c1.getnrOfSeatsPerRow()<<endl; 
 
+	cout << "Number of seats in c3 is: " << c3.getnr_seats() << endl; //test default  constructor
+
+	
 	Date date(0, 0, 0, 0, 0);
-
+	Date date1 = date;//copy constructor
+	
 	// Set the date
 	int day, month, year, hour, minute;
 	cout << "Input day: ";
@@ -304,20 +326,15 @@ int main() {
 	else
 		cout << "The date is invalid." << endl;
 
-	
+	Event details(" ");
+	string eventName;
+	cout << "Enter the event name: ";
+	cin >> eventName;
 
+details.seteventName(eventName);
+	cout << "Event name: " << details.geteventName();
 	
 	
-	//c1.setnr_seats(400);
-	//c1.setnr_rows(300);
-	//c1.setzones("normal");
-	//c1.setlocationName("tnb");
-	//
-
-	//////new values
-	//cout << "\nUpdated nr of seats: " << c1.getnr_seats() <<endl;
-	//cout << "Updated nr of rows: " << c1.getnr_rows() << endl;
-	//cout << "Updated zone: " << c1.getzones() << endl;
-	//cout<<"Updated location name: "<<c1.getlocationName()<<endl;
-	//return 0;
+	
+	return 0;
 }
