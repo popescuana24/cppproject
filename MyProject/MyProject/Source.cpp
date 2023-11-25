@@ -216,10 +216,10 @@ public:
 		return year;
 	}
 
-	int getHour() {
+	int getHour() const {
 		return hour;
 	}
-	int getMinute() {
+	int getMinute() const {
 		return minute;
 	}
 
@@ -258,6 +258,17 @@ public:
 
 		return true;
 	}
+	// Overloading stream insertion operator <<
+	friend ostream& operator<<(ostream&out, const Date& date) {
+		out << "Date: " << date.getDay() << "/" << date.getMonth() << "/" << date.getYear() << " " << date.getHour() << ":" << date.getMinute();
+		return out;
+	}
+
+	// Overloading stream extraction operator >>
+	friend istream& operator>>(istream& in, Date& date) {
+		in >> date.day >> date.month >> date.year >> date.hour >> date.minute;
+		return in;
+	}
 	};
 
 
@@ -265,7 +276,7 @@ class Event {
 private:
 
 	string eventName;
-	
+	Date eventDate;
 	
 public: 
 	//default constructor 
@@ -292,6 +303,30 @@ public:
 	string geteventName() const {
 		return eventName;
 	}
+	const Date& geteventDate() const {
+		return eventDate;
+	}
+
+	// Setter for eventDate
+	void seteventDate(const Date& date) {
+		eventDate = date;
+	}
+	// Overloading stream insertion operator <<
+	friend ostream& operator<<(ostream& out, const Event& event) {
+		out << "Event Name: " << event.eventName << "\nEvent  " << event.eventDate;
+		return out;
+	}
+
+	// Overloading stream extraction operator >>
+	friend istream& operator>>(istream& in, Event& event) {
+		cout << "\nEnter event name: ";
+		getline(in>> ws, event.eventName);
+
+		cout << "\nEnter event date: ";
+		in >> event.eventDate;
+
+		return in;
+	}
 
 	
 		
@@ -317,23 +352,23 @@ int main() {
 	cout << "Zones: " << c1.getzones() << endl;
 	cout<<"Number of seats per row: "<<c1.getnrOfSeatsPerRow()<<endl; 
 
-	cout << "Number of seats in c3 is: " << c3.getnr_seats() << endl; //test default  constructor
+	cout << "\nNumber of seats in c3 is: " << c3.getnr_seats() << endl; //test default  constructor
 
 	//operator +=
 	Location c4;
 	c4.setnr_seats(10);
-	cout << "Initial number of seats: " << c4.getnr_seats() << endl;
+	cout << "\nInitial number of seats: " << c4.getnr_seats() << endl;
 
 	c4 += 5; // Adding 5 more seats
-	cout << "Updated number of seats: " << c4.getnr_seats() << endl;
+	cout << "Updated number of seats after adding: " << c4.getnr_seats() << endl;
 
 	//operator -=
 	Location c5;
 	c5.setnr_seats(10);
-	cout << "Initial number of seats: " << c5.getnr_seats() << endl;
+	cout << "\nInitial number of seats: " << c5.getnr_seats() << endl;
 
 	c5 -= 5;//removing 5 seats
-	cout << "Updated number of seats: " << c5.getnr_seats()<< endl;
+	cout << "Updated number of seats after removing: " << c5.getnr_seats()<< endl;
 
 	
 	Date date(0, 0, 0, 0, 0);
@@ -341,7 +376,7 @@ int main() {
 	
 	// Set the date
 	int day, month, year, hour, minute;
-	cout << "Input day: ";
+	cout << "\nInput day: ";
 	cin >> day;
 	cout << "Input month: ";
 	cin >> month;
@@ -355,7 +390,7 @@ int main() {
 	date.setDate(day, month, year, hour, minute);
 
 	// Get and display the date
-	cout << "Date: " << date.getDay() << "/" << date.getMonth() << "/" << date.getYear() << ", " << date.getHour() <<":"<< date.getMinute() << endl;
+	cout << "\nDate: " << date.getDay() << "/" << date.getMonth() << "/" << date.getYear() << ", " << date.getHour() <<":"<< date.getMinute() << endl;
 
 	// Validate the date
 	if (date.isValidDate())
@@ -365,11 +400,19 @@ int main() {
 
 	Event details(" ");
 	string eventName;
-	cout << "Enter the event name: ";
+	cout << "\nEnter the event name: ";
 	cin >> eventName;
 
 details.seteventName(eventName);
-	cout << "Event name: " << details.geteventName();
+	cout << "\nEvent name: " << details.geteventName();
+
+	Event event;
+
+	// Input using >>
+	cin >> event;
+
+	// Output using <<
+	cout << "\nEVENT DETAILS\n" << event << endl;
 	
 	
 	
