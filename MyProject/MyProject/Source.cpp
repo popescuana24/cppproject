@@ -277,6 +277,7 @@ private:
 
 	string eventName;
 	Date eventDate;
+
 	
 public: 
 	//default constructor 
@@ -322,7 +323,7 @@ public:
 		cout << "\nEnter event name: ";
 		getline(in>> ws, event.eventName);
 
-		cout << "\nEnter event date: ";
+		cout << "\nEnter event date: "<<endl;
 		in >> event.eventDate;
 
 		return in;
@@ -334,6 +335,13 @@ public:
 
 
 class generateticket {
+
+public:
+	// Method to generate a random ticket ID
+	static int generateID() {
+		srand(static_cast<unsigned int>(time(0)));
+		return rand() % 10000; 
+	}
 
 };
 
@@ -404,7 +412,7 @@ int main() {
 	cin >> eventName;
 
 details.seteventName(eventName);
-	cout << "\nEvent name: " << details.geteventName();
+	cout << "Event name: " << details.geteventName();
 
 	Event event;
 
@@ -414,7 +422,10 @@ details.seteventName(eventName);
 	// Output using <<
 	cout << "\nEVENT DETAILS\n" << event << endl;
 	
-	
+	// Generating a random ticket ID
+	int ticketID = generateticket::generateID();
+
+	cout << "\nGenerated Ticket ID: " << ticketID << endl;
 	
 	return 0;
 }
