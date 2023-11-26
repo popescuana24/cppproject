@@ -314,12 +314,7 @@ public:
 	}
 	// Overloading stream insertion operator <<
 	friend ostream& operator<<(ostream& out, const Event& event) {
-		out << "Event Name: " << event.eventName << "\nEvent Date:\n"
-			<< "Day: " << event.eventDate.getDay() << endl
-			<< "Month: " << event.eventDate.getMonth() << endl
-			<< "Year: " << event.eventDate.getYear() << endl
-			<< "Hour: " << event.eventDate.getHour() << endl
-			<< "Minute: " << event.eventDate.getMinute() << endl;
+		out << "Event Name: " << event.eventName << "\nEvent  " << event.eventDate;
 		return out;
 	}
 
