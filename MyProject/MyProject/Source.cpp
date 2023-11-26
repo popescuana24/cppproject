@@ -12,7 +12,7 @@ private:
 	char* zones;//zonele
 	int nrOfSeatsPerRow;
 
-	//adauga address
+	
 public: static const int MIN_SEATS = 5;
 public:
 
@@ -314,7 +314,12 @@ public:
 	}
 	// Overloading stream insertion operator <<
 	friend ostream& operator<<(ostream& out, const Event& event) {
-		out << "Event Name: " << event.eventName << "\nEvent  " << event.eventDate;
+		out << "Event Name: " << event.eventName << "\nEvent Date:\n"
+			<< "Day: " << event.eventDate.getDay() << endl
+			<< "Month: " << event.eventDate.getMonth() << endl
+			<< "Year: " << event.eventDate.getYear() << endl
+			<< "Hour: " << event.eventDate.getHour() << endl
+			<< "Minute: " << event.eventDate.getMinute() << endl;
 		return out;
 	}
 
@@ -336,13 +341,47 @@ public:
 
 class generateticket {
 
+private:
+	int ticketID;
+
 public:
-	//  generate a random ticket ID
-	static int generateID() {
-		srand(static_cast<unsigned int>(time(0)));
-		return rand() % 10000; 
+	// Default constructor
+	generateticket() {
+		ticketID = generateID();
 	}
 
+	// Constructor  parameters
+	generateticket(int id) : ticketID(id) {}
+
+	// Copy constructor
+	generateticket(const generateticket& other) {
+		this->ticketID = other.ticketID;
+	}
+
+	// Function to generate a random ticket ID
+	int generateID() {
+		srand(static_cast<unsigned int>(time(0)));
+		return rand() % 10000 + 1000; // Generate a random number between 1000 and 9999
+	}
+
+	// Getter 
+	int getTicketID() const {
+		return ticketID;
+	}
+
+	//overloading operator =
+	generateticket& operator=(const generateticket& other) {
+		if (this != &other) {
+			ticketID = other.ticketID; // Copy the ticketID from 'other' object
+		}
+		return *this;
+	}
+
+	//overloading operator +
+	generateticket operator+(const generateticket& other) const {
+		int newID = ticketID + other.ticketID; // Combine ticketIDs
+		return generateticket(newID); // Return a new generateticket 
+	}
 };
 
 
@@ -422,10 +461,32 @@ details.seteventName(eventName);
 	// Output using <<
 	cout << "\nEVENT DETAILS\n" << event << endl;
 	
-	// Generating a random ticket ID
-	int ticketID = generateticket::generateID();
+    // Creating a generateticket object
+	generateticket ticket;
 
-	cout << "\nGenerated Ticket ID: " << ticketID << endl;
+    //test the constructor with parameters
+	//generateticket ticket1(1001);
+
+	// Creating another object using the copy constructor
+	//generateticket ticket2(ticket1);
+
+    // Displaying the ticket ID
+	cout << "Ticket ID: " << ticket.getTicketID() << endl;
+
+	//test the operator +
+	generateticket ticket1(1001);
+	generateticket ticket2(2002);
+
+	generateticket ticket3 = ticket1 + ticket2;
+    cout << "\nTicket ID 1: " << ticket1.getTicketID() << endl;
+	cout << "Ticket ID 2: " << ticket2.getTicketID() << endl;
+	cout << "The sum between ticket ID 1 and ticket ID 2: " << ticket3.getTicketID() << endl;
+
+	//test the operator =
+	ticket2 = ticket1;
+	cout << "\nTicket 2 takes the ID of ticket 1" << endl;
+	cout << "Ticket 1 ID: " << ticket1.getTicketID() << endl;
+	cout << "Ticket 2 ID: " << ticket2.getTicketID() << endl;
 	
 	return 0;
 }
