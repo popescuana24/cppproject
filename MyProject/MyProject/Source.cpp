@@ -14,6 +14,7 @@ private:
 
 	
 public: static const int MIN_SEATS = 5;
+	  static int totalLocations;
 public:
 
 
@@ -24,6 +25,7 @@ public:
 		nr_rows = 0;
 		zones = nullptr;
 		nrOfSeatsPerRow=0;
+		totalLocations++;
 	}
 
 	//constructor with parameters
@@ -36,6 +38,7 @@ public:
 		strcpy_s(this->zones, strlen(zones) + 1, zones);
 
 		this->nrOfSeatsPerRow = nrOfSeatsPerRow;
+		
 
 	}   
 
@@ -65,6 +68,7 @@ public:
 		if (this->zones != NULL) {
 			delete[]this->zones;
 			this->zones = nullptr;
+			totalLocations--;
 		}
 		
 	}
@@ -160,9 +164,47 @@ public:
 		}
 		return *this;
 	}
-	
+	// Static method to get total locations
+	static int getTotalLocations() {
+		return totalLocations;
+	}
+
+	// Overloading  operator <<
+	friend ostream& operator<<(ostream& out, const Location& loc) {
+		out << "Number of seats: " << loc.nr_seats << "\nNumber of rows: " << loc.nr_rows << "\nZones: " << loc.zones << "\nNumber of seats per row: " << loc.nrOfSeatsPerRow;
+		return out;
+	}
+	// Overloading  operator >>
+	friend istream& operator>>( istream& in, Location& loc) {
+		int seats, rows, seatsPerRow;
+		char* zones = new char[100]; 
+
+		cout << "Enter number of seats: ";
+		in >> seats;
+		loc.setnr_seats(seats);
+
+		cout << "Enter number of rows: ";
+		in >> rows;
+		loc.setnr_rows(rows);
+
+		cout << "Enter zones: ";
+		in >> zones;
+		loc.setzones(zones);
+
+		cout << "Enter number of seats per row: ";
+		in >> seatsPerRow;
+		loc.setnrOfSeatsPerRow(seatsPerRow);
+
+		delete[] zones;
+
+		return in;
+	}
 
 };
+
+int Location::totalLocations = 0;
+
+
 class Date {
 private:
 	int day;
@@ -445,7 +487,7 @@ int main() {
 	cout << "\nEnter the event name: ";
 	cin >> eventName;
 
-details.seteventName(eventName);
+    details.seteventName(eventName);
 	cout << "Event name: " << details.geteventName();
 
 	Event event;
