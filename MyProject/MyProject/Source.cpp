@@ -50,12 +50,12 @@ public:
 		this->nr_rows = other.nr_rows;
 
 		if (other.zones != NULL) {
-			// Allocate new memory for zones
+			
 			this->zones = new char[strlen(other.zones) + 1];
 			strcpy_s(this->zones, strlen(other.zones) + 1, other.zones);
 		}
 		else {
-			// If other.zones is NULL, assign nullptr to this->zones
+			
 			this->zones = nullptr;
 		}
 
@@ -409,7 +409,7 @@ public:
 	//overloading operator =
 	generateticket& operator=(const generateticket& other) {
 		if (this != &other) {
-			ticketID = other.ticketID; // Copy the ticketID from 'other' object
+			ticketID = other.ticketID; 
 		}
 		return *this;
 	}
