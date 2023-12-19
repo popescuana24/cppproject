@@ -57,7 +57,7 @@ public:
 		else {
 			// If other.zones is NULL, assign nullptr to this->zones
 			this->zones = nullptr;
-		}//////////de adaugat locationName
+		}
 
 		this->nrOfSeatsPerRow = other.nrOfSeatsPerRow;
 
