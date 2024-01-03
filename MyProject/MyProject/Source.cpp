@@ -11,6 +11,8 @@ private:
 	int nr_rows;//nr randuri
 	char* zones;//zonele
 	int nrOfSeatsPerRow;
+	bool* seatStatus; // Array to track seat status: true-booked, false-available
+
 
 	
 public: static const int MIN_SEATS = 5;
@@ -25,6 +27,8 @@ public:
 		nr_rows = 0;
 		zones = nullptr;
 		nrOfSeatsPerRow=0;
+		
+
 		totalLocations++;
 	}
 
@@ -37,14 +41,14 @@ public:
 		this->zones = new char[strlen(zones) + 1];
 		strcpy_s(this->zones, strlen(zones) + 1, zones);
 
-		this->nrOfSeatsPerRow = nrOfSeatsPerRow;
-		
+		seatStatus = new bool[nr_seats];
+		memset(seatStatus, false, nr_seats);
+
 
 	}   
-
+	
 	//copy constructor
-
-	Location(const Location& other) {
+     Location(const Location& other) {
 
 		this->nr_seats = other.nr_seats;
 		this->nr_rows = other.nr_rows;
@@ -60,23 +64,22 @@ public:
 		}
 
 		this->nrOfSeatsPerRow = other.nrOfSeatsPerRow;
-
+		
 	}
 
 	//destructor
 	~Location() {
-		if (this->zones != NULL) {
-			delete[]this->zones;
-			this->zones = nullptr;
-			totalLocations--;
-		}
-		
+		if (zones != nullptr) {
+            delete[] zones;
+            zones = nullptr;
+        }
+		delete[] seatStatus;
+
+        totalLocations--;
 	}
 
 	
-
-
-	//getters
+   //getters
 	int getnr_seats() {
 		return this->nr_seats;
 	}
@@ -143,6 +146,41 @@ public:
 		}
 	}
 	
+	// Function to book seats
+	void bookSeats(int seatsToBook) {
+		if (seatsToBook > 0) {
+			int availableSeats = findAvailableSeats(); // Check available seats
+			if (seatsToBook <= availableSeats) {
+				int seatsBooked = 0;
+				for (int i = 0; i < nr_seats && seatsBooked < seatsToBook; ++i) {
+					if (!seatStatus[i]) { // If seat is available
+						seatStatus[i] = true; // Mark seat as booked
+						seatsBooked++;
+						cout << "\nSeat " << i + 1 << " booked." << endl; // Display the booked seat
+					}
+				}
+				cout << seatsBooked << " seats successfully booked!" << endl;
+			}
+			else {
+				cout << "Not enough available seats." << endl;
+			}
+		}
+		else {
+			cout << "Invalid number of seats to book." << endl;
+		}
+	}
+
+	// Function to find available seats
+	int findAvailableSeats() {
+		int availableSeats = 0;
+		for (int i = 0; i < nr_seats; ++i) {
+			if (!seatStatus[i]) { // Count available seats
+				availableSeats++;
+			}
+		}
+		return availableSeats;
+	}
+
 	//overloading operator +=
 	Location& operator+=(int addSeats) {
 		if (addSeats > 0) {
@@ -265,7 +303,7 @@ public:
 		return minute;
 	}
 
-	//here we validate if the date is VALID
+	// we validate if the date is VALID
 	bool isValidDate() const {
 		//we check the day
 		if (day < 1 || day>31)
@@ -331,7 +369,7 @@ public:
 
 	//copy constructor
 	Event(const Event& other) {
-		this->eventName = eventName;
+		this->eventName = other.eventName;
 	}
      
 
@@ -524,6 +562,13 @@ int main() {
 	cout << "\nTicket 2 takes the ID of ticket 1" << endl;
 	cout << "Ticket 1 ID: " << ticket1.getTicketID() << endl;
 	cout << "Ticket 2 ID: " << ticket2.getTicketID() << endl;
-	
+
+	// Book seats
+	c1.bookSeats(5); // Try booking 5 seats
+
+	// Check available seats
+	int available = c1.findAvailableSeats();
+	cout << "Available seats after booking: " << available << endl;
+
 	return 0;
 }
