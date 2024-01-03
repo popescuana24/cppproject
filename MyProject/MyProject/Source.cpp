@@ -338,6 +338,8 @@ public:
 
 		return true;
 	}
+
+
 	// Overloading stream insertion operator <<
 	friend ostream& operator<<(ostream&out, const Date& date) {
 		out << "Date: " << date.getDay() << "/" << date.getMonth() << "/" << date.getYear() << " " << date.getHour() << ":" << date.getMinute();
@@ -443,6 +445,11 @@ public:
 	int getTicketID() const {
 		return ticketID;
 	}
+
+	void setTicketID(int id) {
+		ticketID = id;
+	}
+
 
 	//overloading operator =
 	generateticket& operator=(const generateticket& other) {
@@ -562,6 +569,13 @@ int main() {
 	cout << "\nTicket 2 takes the ID of ticket 1" << endl;
 	cout << "Ticket 1 ID: " << ticket1.getTicketID() << endl;
 	cout << "Ticket 2 ID: " << ticket2.getTicketID() << endl;
+
+	// Example usage of setTicketID function
+	generateticket ticket4;
+	int newID = 9999; // Replace this with your desired ID
+	ticket.setTicketID(newID);
+
+	cout << "\nNew Ticket ID: " << ticket.getTicketID() << endl;
 
 	// Book seats
 	c1.bookSeats(5); // Try booking 5 seats
