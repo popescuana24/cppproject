@@ -1,5 +1,6 @@
 #include <iostream>
 #include <string>
+#include<fstream>
 
 
 using namespace std;
@@ -43,7 +44,7 @@ public:
 
 		seatStatus = new bool[nr_seats];
 		memset(seatStatus, false, nr_seats);
-
+		this->nrOfSeatsPerRow = nrOfSeatsPerRow;
 
 	}
 
@@ -184,7 +185,7 @@ public:
 
 	// Function to display booked seats
 	void displayBookedSeats() {
-		cout << "Booked Seats: ";
+		cout << "\nBooked Seats: ";
 		bool booked = false;
 
 		for (int i = 0; i < nr_seats; ++i) {
@@ -195,7 +196,7 @@ public:
 		}
 
 		if (!booked) {
-			cout << "No seats have been booked yet.";
+			cout << "\nNo seats have been booked yet.";
 		}
 
 		cout << endl;
@@ -372,6 +373,22 @@ public:
 		in >> date.day >> date.month >> date.year >> date.hour >> date.minute;
 		return in;
 	}
+
+	//operator ==
+	bool operator==(const Date& other) const {
+		return day == other.day &&
+			month == other.month &&
+			year == other.year &&
+			hour == other.hour &&
+			minute == other.minute;
+	}
+
+	//operator !=
+	bool operator!=(const Date& other) const {
+		return !(*this == other);
+	}
+
+
 };
 
 
@@ -485,6 +502,10 @@ public:
 		int newID = ticketID + other.ticketID; // Combine ticketIDs
 		return generateticket(newID); // Return a new generateticket 
 	}
+
+	
+
+
 };
 
 
@@ -492,7 +513,7 @@ public:
 int main() {
 
 	//location object
-	Location c1(50, 50, "vip", 4);//constructor with parameters
+	Location c1(50, 50, "vip", 10);//constructor with parameters
 	Location c2 = c1;//copy constructor
 	Location c3;//default constructor
 
@@ -609,12 +630,46 @@ int main() {
 
 	// Check available seats
 	available = c1.findAvailableSeats();
-	cout << "Available seats after booking: " << available << endl;
+	cout << "\nAvailable seats after booking: " << available << endl;
 
 
 	// Display booked seats for location c1
 	c1.displayBookedSeats();
 
+	Location c6(100, 50, "normal", 10);
+
+	//FILES
+	ofstream outFile("oop.exe data.txt"); // Create an output file stream
+
+	if (outFile.is_open()) {
+		// Writing Location object details
+		outFile << "Location Details:" << endl;
+		outFile << "Number of seats: " << c6.getnr_seats() << endl;
+		outFile << "Number of rows: " << c6.getnr_rows() << endl;
+		outFile << "Zones: " << c6.getzones() << endl;
+		outFile << "Number of seats per row: " << c6.getnrOfSeatsPerRow() << endl;
+
+		// Writing Date object details
+		outFile << "\nDate Details:" << endl;
+		outFile << "Date: " << date.getDay() << "/" << date.getMonth() << "/" << date.getYear()
+			<< " " << date.getHour() << ":" << date.getMinute() << endl;
+
+		// Writing Event object details
+		outFile << "\nEvent Details:" << endl;
+		outFile << "Event Name: " << event.geteventName() << endl;
+		outFile << "Event Date: " << event.geteventDate().getDay() << "/"
+			<< event.geteventDate().getMonth() << "/" << event.geteventDate().getYear()
+			<< " " << event.geteventDate().getHour() << ":" << event.geteventDate().getMinute() << endl;
+
+		// Writing generateticket object details
+		outFile << "\nTicket Details:" << endl;
+		outFile << "Ticket ID: " << ticket.getTicketID() << endl;
+
+		outFile.close(); // Close the file
+	}
+	else {
+		cout << "Unable to open file for writing." << endl;
+	}
 
 	return 0;
 }

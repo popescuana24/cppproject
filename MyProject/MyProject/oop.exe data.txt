@@ -1,0 +1,15 @@
+Location Details:
+Number of seats: 100
+Number of rows: 50
+Zones: normal
+Number of seats per row: 10
+
+Date Details:
+Date: 12/12/2023 12:12
+
+Event Details:
+Event Name: football
+Event Date: 12/12/2023 12:12
+
+Ticket Details:
+Ticket ID: 9999
