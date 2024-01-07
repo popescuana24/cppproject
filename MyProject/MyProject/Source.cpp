@@ -541,6 +541,7 @@ int main() {
 	c5 -= 5;//removing 5 seats
 	cout << "Updated number of seats after removing: " << c5.getnr_seats() << endl;
 
+	
 
 	Date date(0, 0, 0, 0, 0);
 	Date date1 = date;//copy constructor
@@ -613,11 +614,11 @@ int main() {
 	cout << "Ticket 2 ID: " << ticket2.getTicketID() << endl;
 
 	// Example usage of setTicketID function
-	generateticket ticket4;
-	int newID = 9999; // Replace this with your desired ID
-	ticket.setTicketID(newID);
+	//generateticket ticket4;
+	//int newID = 9999; // Replace this with your desired ID
+	//ticket.setTicketID(newID);
 
-	cout << "\nNew Ticket ID: " << ticket.getTicketID() << endl;
+	//cout << "\nNew Ticket ID: " << ticket.getTicketID() << endl;
 
 	// Book seats
 	c1.bookSeats(5); // Try booking 5 seats
@@ -643,26 +644,26 @@ int main() {
 
 	if (outFile.is_open()) {
 		// Writing Location object details
-		outFile << "Location Details:" << endl;
+		outFile << "Location details:" << endl;
 		outFile << "Number of seats: " << c6.getnr_seats() << endl;
 		outFile << "Number of rows: " << c6.getnr_rows() << endl;
-		outFile << "Zones: " << c6.getzones() << endl;
+		outFile << "Zone: " << c6.getzones() << endl;
 		outFile << "Number of seats per row: " << c6.getnrOfSeatsPerRow() << endl;
 
 		// Writing Date object details
-		outFile << "\nDate Details:" << endl;
+		outFile << "\nDate details:" << endl;
 		outFile << "Date: " << date.getDay() << "/" << date.getMonth() << "/" << date.getYear()
 			<< " " << date.getHour() << ":" << date.getMinute() << endl;
 
 		// Writing Event object details
-		outFile << "\nEvent Details:" << endl;
-		outFile << "Event Name: " << event.geteventName() << endl;
-		outFile << "Event Date: " << event.geteventDate().getDay() << "/"
+		outFile << "\nEvent details:" << endl;
+		outFile << "Event name: " << event.geteventName() << endl;
+		outFile << "Event date: " << event.geteventDate().getDay() << "/"
 			<< event.geteventDate().getMonth() << "/" << event.geteventDate().getYear()
 			<< " " << event.geteventDate().getHour() << ":" << event.geteventDate().getMinute() << endl;
 
 		// Writing generateticket object details
-		outFile << "\nTicket Details:" << endl;
+		outFile << "\nTicket details:" << endl;
 		outFile << "Ticket ID: " << ticket.getTicketID() << endl;
 
 		outFile.close(); // Close the file
@@ -670,6 +671,11 @@ int main() {
 	else {
 		cout << "Unable to open file for writing." << endl;
 	}
+	
+	
+	
 
 	return 0;
 }
+
+	
