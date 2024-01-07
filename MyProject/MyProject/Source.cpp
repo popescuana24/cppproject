@@ -201,6 +201,16 @@ public:
 
 		cout << endl;
 	}
+	// Function to check if a seat is booked
+	bool isSeatBooked(int seatNumber) const {
+		if (seatNumber > 0 && seatNumber <= nr_seats) {
+			return seatStatus[seatNumber - 1]; // Adjusting for zero-based indexing
+		}
+		else {
+			cout << "Invalid seat number." << endl;
+			return false;
+		}
+	}
 
 
 	//overloading operator +=
@@ -637,7 +647,21 @@ int main() {
 	// Display booked seats for location c1
 	c1.displayBookedSeats();
 
+	//c1.bookSeats(10);
+
 	Location c6(100, 50, "normal", 10);
+
+	int seatToCheck;
+	cout << "Enter the seat number you want to check: ";
+	cin >> seatToCheck;
+
+	//seatToCheck = 2; // Seat number to check
+	if (c1.isSeatBooked(seatToCheck)) {
+		cout << "Seat " << seatToCheck << " is already booked." << endl;
+	}
+	else {
+		cout << "Seat " << seatToCheck << " is available." << endl;
+	}
 
 	//FILES
 	ofstream outFile("oop.exe data.txt"); // Create an output file stream

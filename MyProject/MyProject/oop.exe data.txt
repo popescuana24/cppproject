@@ -5,11 +5,11 @@ Zone: normal
 Number of seats per row: 10
 
 Date details:
-Date: 12/12/2023 21:30
+Date: 12/12/2023 12:12
 
 Event details:
-Event name: football
-Event date: 12/12/2023 21:30
+Event name: FOOTBALL
+Event date: 12/12/2023 12:12
 
 Ticket details:
-Ticket ID: 8261
+Ticket ID: 4265
