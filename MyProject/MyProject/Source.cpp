@@ -12,8 +12,7 @@ private:
 	int nr_rows;//nr randuri
 	char* zones;//zonele
 	int nrOfSeatsPerRow;
-	bool* seatStatus; // Array to track seat status: true-booked, false-available
-
+	bool** seats;
 
 
 public: static const int MIN_SEATS = 5;
@@ -28,7 +27,7 @@ public:
 		nr_rows = 0;
 		zones = nullptr;
 		nrOfSeatsPerRow = 0;
-		seatStatus = nullptr;
+		seats = nullptr;
 
 		totalLocations++;
 	}
@@ -42,8 +41,16 @@ public:
 		this->zones = new char[strlen(zones) + 1];
 		strcpy_s(this->zones, strlen(zones) + 1, zones);
 
-		seatStatus = new bool[nr_seats];
-		memset(seatStatus, false, nr_seats);
+		//seatStatus = new bool[nr_seats];
+		//memset(seatStatus, false, nr_seats);
+
+		seats = new bool* [nr_rows];
+		for (int i = 0; i < nr_rows; ++i) {
+			seats[i] = new bool[nr_seats];
+			for (int j = 0; j < nr_seats; ++j) {
+				seats[i][j] = false; // Initialize seats as unbooked (false)
+			}
+		}
 
 		this->nrOfSeatsPerRow = nrOfSeatsPerRow;
 
@@ -75,7 +82,12 @@ public:
 			delete[] zones;
 			zones = nullptr;
 		}
-		delete[] seatStatus;
+		//delete[] seatStatus;
+
+		for (int i = 0; i < nr_rows; ++i) {
+			delete[] seats[i];
+		}
+		delete[] seats;
 
 		totalLocations--;
 	}
@@ -149,43 +161,43 @@ public:
 	}
 
 	// Function to book seats
-	void bookSeats(int seatsToBook) {
-		if (seatsToBook > 0) {
-			int availableSeats = findAvailableSeats(); // Check available seats
-			if (seatsToBook <= availableSeats) {
-				int seatsBooked = 0;
-				for (int i = 0; i < nr_seats && seatsBooked < seatsToBook; i++) {
-					if (!seatStatus[i]) { // If seat is available
-						seatStatus[i] = true; // Mark seat as booked
-						seatsBooked++;
-						cout << "\nSeat " << i + 1 << " booked" << endl; // Display the booked seat
-					}
-				}
-				cout << seatsBooked << " seats successfully booked!" << endl;
-			}
-			else {
-				cout << "Not enough available seats" << endl;
-			}
-		}
-		else {
-			cout << "Invalid number of seats to book" << endl;
-		}
-	}
+	//void bookSeats(int seatsToBook) {
+	//	if (seatsToBook > 0) {
+	//		int availableSeats = findAvailableSeats(); // Check available seats
+	//		if (seatsToBook <= availableSeats) {
+	//			int seatsBooked = 0;
+	//			for (int i = 0; i < nr_seats && seatsBooked < seatsToBook; i++) {
+	//				if (!seatStatus[i]) { // If seat is available
+	//					seatStatus[i] = true; // Mark seat as booked
+	//					seatsBooked++;
+	//					cout << "\nSeat " << i + 1 << " booked" << endl; // Display the booked seat
+	//				}
+	//			}
+	//			cout << seatsBooked << " seats successfully booked!" << endl;
+	//		}
+	//		else {
+	//			cout << "Not enough available seats" << endl;
+	//		}
+	//	}
+	//	else {
+	//		cout << "Invalid number of seats to book" << endl;
+	//	}
+	//}
 
 
 	// Function to find available seats
-	int findAvailableSeats() {
-		int availableSeats = 0;
-		for (int i = 0; i < nr_seats; i++) {
-			if (!seatStatus[i]) { // Count available seats
-				availableSeats++;
-			}
-		}
-		return availableSeats;
-	}
+	//int findAvailableSeats() {
+	//	int availableSeats = 0;
+	//	for (int i = 0; i < nr_seats; i++) {
+	//		if (!seatStatus[i]) { // Count available seats
+	//			availableSeats++;
+	//		}
+	//	}
+	//	return availableSeats;
+	//}
 
 	// Function to display booked seats
-	void displayBookedSeats() {
+	/*void displayBookedSeats() {
 		cout << "\nBooked Seats: ";
 		bool booked = false;
 
@@ -201,18 +213,44 @@ public:
 		}
 
 		cout << endl;
-	}
+	}*/
 	// Function to check if a seat is booked
-	bool isSeatBooked(int seatNumber) const {
+	/*bool isSeatBooked(int seatNumber) const {
 		if (seatNumber > 0 && seatNumber <= nr_seats) {
-			return seatStatus[seatNumber - 1]; 
+			return seatStatus[seatNumber - 1];
 		}
 		else {
 			cout << "Invalid seat number" << endl;
 			return false;
 		}
+	}*/
+
+
+	// Method to book a specific seat
+	bool bookSpecificSeat(int row, int seat) {
+		if (row >= 0 && row < nr_rows && seat >= 0 && seat < nr_seats) {
+			if (!seats[row][seat]) {
+				seats[row][seat] = true; // Book the seat
+				return true; // Successfully booked
+			}
+			else {
+				return false; // Seat already booked
+			}
+		}
+		else {
+			return false; // Invalid row or seat
+		}
 	}
 
+	// Method to check if a specific seat is booked
+	bool isSeatBooked(int row, int seat) {
+		if (row >= 0 && row < nr_rows && seat >= 0 && seat < nr_seats) {
+			return seats[row][seat];
+		}
+		else {
+			return false; // Invalid row or seat
+		}
+	}
 
 	//overloading operator +=
 	Location& operator+=(int addSeats) {
@@ -445,7 +483,7 @@ public:
 	}
 	// Overloading stream insertion operator <<
 	friend ostream& operator<<(ostream& out, const Event& event) {
-		out << "Event Name: " << event.eventName << "\nEvent  " << event.eventDate;
+		out << "Event name: " << event.eventName << "\nEvent  " << event.eventDate;
 		return out;
 	}
 
@@ -454,12 +492,23 @@ public:
 		cout << "\nEnter the event name: ";
 		getline(in >> ws, event.eventName);
 
-		cout << "\nEnter the event date: " << endl;
-		in >> event.eventDate;
+		int day, month, year, hour, minute;
+		cout << "\nEnter the day: ";
+		in >> day;
+		cout << "Enter the month: ";
+		in >> month;
+		cout << "Enter the year: ";
+		in >> year;
+		cout << "Enter the hour: ";
+		in >> hour;
+		cout << "Enter the minute: ";
+		in >> minute;
+
+		// Constructing the eventDate using the provided components
+		event.eventDate.setDate(day, month, year, hour, minute);
 
 		return in;
 	}
-
 
 
 };
@@ -514,7 +563,7 @@ public:
 		return generateticket(newID); // Return a new generateticket 
 	}
 
-	
+
 
 
 };
@@ -523,35 +572,16 @@ public:
 
 int main() {
 
-	int seats, rows, seatsPerRow;
-	char zones[100];
 
-	cout << "Enter number of seats: ";
-	cin >> seats;
 
-	cout << "Enter number of rows: ";
-	cin >> rows;
+	// Display updated location details after booking
+	//cout << "\nUpdated Location details:\n";
+	//cout << c9 << endl;
 
-	cout << "Enter zones: ";
-	cin.ignore(); // Ignore the newline character in the input buffer
-	cin.getline(zones, 100); // Read the entire line for zones
 
-	cout << "Enter number of seats per row: ";
-	cin >> seatsPerRow;
 
-	// Create a Location object based on user input
-	Location c7(seats, rows, zones, seatsPerRow);
-
-	// Now you can use c1 for further operations or display details
-	cout << "\nLocation details:\n";
-	cout << "Number of seats: " << c7.getnr_seats() << endl;
-	cout << "Number of rows: " << c7.getnr_rows() << endl;
-	cout << "Zone: " << c7.getzones() << endl;
-	cout << "Number of seats per row: " << c7.getnrOfSeatsPerRow() << endl;
-
-	//FILES
 	//location object
-	Location c1(50, 50, "vip", 10);//constructor with parameters
+	//Location c1(50, 50, "vip", 10);//constructor with parameters
 	//Location c2 = c1;//copy constructor
 	//Location c3;//default constructor
 
@@ -579,53 +609,53 @@ int main() {
 	//c5 -= 5;//removing 5 seats
 	//cout << "Updated number of seats after removing: " << c5.getnr_seats() << endl;
 
-	
 
-	Date date(0, 0, 0, 0, 0);
+
+	//Date date(0, 0, 0, 0, 0);
 	//Date date1 = date;//copy constructor
 
 	// Set the date
-	int day, month, year, hour, minute;
-	cout << "\nInput day: ";
-	cin >> day;
-	cout << "Input month: ";
-	cin >> month;
-	cout << "Input year: ";
-	cin >> year;
-	cout << "Input hour: ";
-	cin >> hour;
-	cout << "input minute: ";
-	cin >> minute;
+	//int day, month, year, hour, minute;
+	//cout << "\nInput day: ";
+	//cin >> day;
+	//cout << "Input month: ";
+	//cin >> month;
+	//cout << "Input year: ";
+	//cin >> year;
+	//cout << "Input hour: ";
+	//cin >> hour;
+	//cout << "input minute: ";
+	//cin >> minute;
 
-	date.setDate(day, month, year, hour, minute);
+	//date.setDate(day, month, year, hour, minute);
 
 	// Get and display the date
-	cout << "\nDate: " << date.getDay() << "/" << date.getMonth() << "/" << date.getYear() << ", " << date.getHour() << ":" << date.getMinute() << endl;
+	//cout << "\nDate: " << date.getDay() << "/" << date.getMonth() << "/" << date.getYear() << ", " << date.getHour() << ":" << date.getMinute() << endl;
 
 	// Validate the date
-	if (date.isValidDate())
-		cout << "The date is valid." << endl;
-	else
-		cout << "The date is invalid." << endl;
+	//if (date.isValidDate())
+		//cout << "The date is valid." << endl;
+	//else
+		//cout << "The date is invalid." << endl;
 
-	Event details(" ");
-	string eventName;
-	cout << "\nEnter the event name: ";
-	cin >> eventName;
+	//Event details(" ");
+	//string eventName;
+	//cout << "\nEnter the event name: ";
+	//cin >> eventName;
 
-	details.seteventName(eventName);
-	cout << "Event name: " << details.geteventName();
+	//details.seteventName(eventName);
+	//cout << "Event name: " << details.geteventName();
 
-	Event event;
+	//Event event;
 
 	// Input using >>
-	cin >> event;
+	//cin >> event;
 
 	// Output using <<
-	cout << "\nEVENT DETAILS\n" << event << endl;
+	//cout << "\nEVENT DETAILS\n" << event << endl;
 
 	// Creating a generateticket object
-	generateticket ticket;
+	//generateticket ticket;
 
 	//test the constructor with parameters
 	//generateticket ticket1(1001);
@@ -634,7 +664,7 @@ int main() {
 	//generateticket ticket2(ticket1);
 
 	// Displaying the ticket ID
-	cout << "Ticket ID: " << ticket.getTicketID() << endl;
+	//cout << "Ticket ID: " << ticket.getTicketID() << endl;
 
 	//test the operator +
 	//generateticket ticket1(1001);
@@ -651,129 +681,153 @@ int main() {
 	cout << "Ticket 1 ID: " << ticket1.getTicketID() << endl;
 	cout << "Ticket 2 ID: " << ticket2.getTicketID() << endl;*/
 
-	// Example usage of setTicketID function
+	//  setTicketID function
 	//generateticket ticket4;
 	//int newID = 9999; // Replace this with your desired ID
 	//ticket.setTicketID(newID);
 
 	//cout << "\nNew Ticket ID: " << ticket.getTicketID() << endl;
 
-	// Book seats
-	//c1.bookSeats(5); // Try booking 5 seats
 
-	// Check available seats
-	//int available = c1.findAvailableSeats();
-	//cout << "Available seats after booking: " << available << endl;
+	int choice;
+	cout << "WELCOME TO THE MENU!\n";
+	cout << "\nPRESS KEY 1 if you want to enter the data from the console\n";
+	cout << "PRESS KEY 2 if you want to read the data from a text file\n";
+	cout << "PRESS KEY 3 if you want to EXIT\n";
+	cout << "\nEnter your choice: ";
+	cin >> choice;
 
-	//c1.bookSeats(50); // Try booking 50 seats
+	if (choice == 1) {
+		int seats, rows, seatsPerRow;
+		char zones[100];
 
-	// Check available seats
-	//available = c1.findAvailableSeats();
-	//cout << "\nAvailable seats after booking: " << available << endl;
+		cout << "\nLET'S ENTER THE LOCATION DETAILS!" << endl;
+		cout << "Enter number of seats: ";
+		cin >> seats;
 
+		cout << "Enter number of rows: ";
+		cin >> rows;
 
-	// Display booked seats for location c1
-	//c1.displayBookedSeats();
+		cout << "Enter zones: ";
+		cin.ignore();
+		cin.getline(zones, 100);
 
-	//c1.bookSeats(10);
+		cout << "Enter number of seats per row: ";
+		cin >> seatsPerRow;
 
-	int seatsToBook;
-	cout << "\nEnter the number of seats to book: ";
-	cin >> seatsToBook;
+		// Create a Location object 
+		Location c9(seats, rows, zones, seatsPerRow);
 
-	c1.bookSeats(seatsToBook); // Book the specified number of seats
+		// Display  location details
+		cout << "\n[ LOCATION DETAILS ]\n";
+		cout << c9 << endl;
 
-	// Display available seats after booking
-	int availableSeats = c1.findAvailableSeats();
-	cout << "Available seats after booking: " << availableSeats << endl;
+		cout << "\nCHOOSE YOUR ROW AND YOUR SEAT! " << endl;
+		//  Booking specific seats
+		int rowToBook, seatToBook;
 
+		cout << "Enter row number you want to book: ";
+		cin >> rowToBook;
 
-	Location c6(100, 50, "normal", 10);
+		cout << "Enter seat number you want to book: ";
+		cin >> seatToBook;
 
-	int seatToCheck;
-	cout << "\nEnter the seat number you want to check: ";
-	cin >> seatToCheck;
+		// Book the specified seat using bool** seats
+		if (c9.bookSpecificSeat(rowToBook, seatToBook)) {
+			cout << " ROW " << rowToBook << " SEAT " << seatToBook << " successfully booked!" << endl;
+		}
+		else {
+			cout << " ROW " << rowToBook << " SEAT " << seatToBook << " is already booked!" << endl;
+		}
 
-	//seatToCheck = 2; // Seat number to check
-	if (c1.isSeatBooked(seatToCheck)) {
-		cout << "Seat " << seatToCheck << " is already booked." << endl;
-	}
-	else {
-		cout << "Seat " << seatToCheck << " is available." << endl;
-	}
+		// Check if a seat is booked
+		//int rowToCheck, seatToCheck;
 
-	//Location locdetails; // Create a Location object
+		//cout << "\nEnter row number to check: ";
+		///cin >> rowToCheck;
 
-	//// Input location details 
-	//cout << "Enter number of seats: ";
-	//int seats;
-	//cin >> seats;
-	//locdetails.setnr_seats(seats);
+		//cout << "Enter seat number to check: ";
+		//cin >> seatToCheck;
 
-	//cout << "Enter number of rows: ";
-	//int rows;
-	//cin >> rows;
-	//locdetails.setnr_rows(rows);
+		// Check if the specified seat is booked
+		//if (c9.isSeatBooked(rowToCheck, seatToCheck)) {
+			//cout << "Seat at Row " << rowToCheck << " Seat " << seatToCheck << " is already booked." << endl;
+		//}
+		//else {
+			//cout << "Seat at Row " << rowToCheck << " Seat " << seatToCheck << " is available." << endl;
+		//}
 
-	//cout << "Enter zones: ";
-	//string zones;
-	//getline(cin >> ws, zones); // Read the entire line, including spaces
-	//locdetails.setzones(zones.c_str());
-	//cout << "Enter number of seats per row: ";
-	//int seatsPerRow;
-	//cin >> seatsPerRow;
-	//locdetails.setnrOfSeatsPerRow(seatsPerRow);
+		cout << "\nENTER THE EVENT DETAILS!" << endl;
+		Event event;
 
-	
+		// Input using >>
+		cin >> event;
 
-	//READ FROM A FILE
+		// Output using <<
+		cout << "\n[ EVENT DETAILS ]\n" << event << endl;
 
-	ifstream inFile("display_details.txt",ios::in);
-
-	if (inFile.is_open()) {
-		// Read data for Location
-		int nr_seats, nr_rows, nrOfSeatsPerRow;
-		string zones;
-
-		inFile >> nr_seats >> nr_rows >> zones >> nrOfSeatsPerRow;
-		Location location(nr_seats, nr_rows, zones.c_str(), nrOfSeatsPerRow);
-
-		// Read data for Date
-		int day, month, year, hour, minute;
-		inFile >> day >> month >> year >> hour >> minute;
-		Date eventDate(day, month, year, hour, minute);
-
-		// Read data for Event
-		inFile.ignore(); // Ignore the newline character
-		string eventName;
-		getline(inFile, eventName);
-
-		Event event(eventName);
-		event.seteventDate(eventDate);
-
-		// Read data for generateticket
-		int ticketID;
-		inFile >> ticketID;
-		generateticket ticket(ticketID);
-
-		// Display or use the read data as needed
-		cout << "\nLocation details:\n" << location << endl;
-		cout << "Event details:\n";
-		cout << "Event name: " << event.geteventName() << endl;
-		cout << "Event date: " << event.geteventDate().getDay() << "/" << event.geteventDate().getMonth() << "/"
-			<< event.geteventDate().getYear() << " " << event.geteventDate().getHour() << ":"
-			<< event.geteventDate().getMinute() << endl;
+		// Creating a generateticket object
+		generateticket ticket;
 		cout << "Ticket ID: " << ticket.getTicketID() << endl;
 
-		inFile.close();
+		//the seat and row
+		cout << "Seat: " << seatToBook << endl;
+		cout << "Row: " << rowToBook << endl;
 	}
-	else {
-		cout << "Unable to open file for reading." << endl;
+	else if (choice == 2) {
+		//READING FROM A TEXT FILE
+		ifstream inFile("display_details.txt", ios::in);
+
+		if (inFile.is_open()) {
+			// Read data for Location
+			int nr_seats, nr_rows, nrOfSeatsPerRow;
+			string zones;
+
+			inFile >> nr_seats >> nr_rows >> zones >> nrOfSeatsPerRow;
+			Location location(nr_seats, nr_rows, zones.c_str(), nrOfSeatsPerRow);
+
+			// Read data for Date
+			int day, month, year, hour, minute;
+			inFile >> day >> month >> year >> hour >> minute;
+			Date eventDate(day, month, year, hour, minute);
+
+			// Read data for Event
+			inFile.ignore();
+			string eventName;
+			getline(inFile, eventName);
+
+			Event event(eventName);
+			event.seteventDate(eventDate);
+
+			// Read data for generateticket
+			int ticketID;
+			inFile >> ticketID;
+			generateticket ticket(ticketID);
+
+			// read
+			cout << "\nLocation details:\n" << location << endl;
+			cout << "\nEvent details:\n";
+			cout << "Event name: " << event.geteventName() << endl;
+			cout << "Event date: " << event.geteventDate().getDay() << "/" << event.geteventDate().getMonth() << "/"
+				<< event.geteventDate().getYear() << " " << event.geteventDate().getHour() << ":"
+				<< event.geteventDate().getMinute() << endl;
+			cout << "Ticket ID: " << ticket.getTicketID() << endl;
+
+
+
+			inFile.close();
+		}
+		else {
+			cout << "Unable to open file for reading." << endl;
+		}
 	}
+	//EXIT THE PROGRAM
+	else if (choice == 3) {
+		cout << "EXIT" << endl;
+	}
+	
 
 
-
-	return 0;
+     return 0;
 }
 
-	
