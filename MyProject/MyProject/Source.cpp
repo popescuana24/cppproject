@@ -28,7 +28,7 @@ public:
 		nr_rows = 0;
 		zones = nullptr;
 		nrOfSeatsPerRow = 0;
-
+		seatStatus = nullptr;
 
 		totalLocations++;
 	}
@@ -44,6 +44,7 @@ public:
 
 		seatStatus = new bool[nr_seats];
 		memset(seatStatus, false, nr_seats);
+
 		this->nrOfSeatsPerRow = nrOfSeatsPerRow;
 
 	}
@@ -157,17 +158,17 @@ public:
 					if (!seatStatus[i]) { // If seat is available
 						seatStatus[i] = true; // Mark seat as booked
 						seatsBooked++;
-						cout << "\nSeat " << i + 1 << " booked." << endl; // Display the booked seat
+						cout << "\nSeat " << i + 1 << " booked" << endl; // Display the booked seat
 					}
 				}
 				cout << seatsBooked << " seats successfully booked!" << endl;
 			}
 			else {
-				cout << "Not enough available seats." << endl;
+				cout << "Not enough available seats" << endl;
 			}
 		}
 		else {
-			cout << "Invalid number of seats to book." << endl;
+			cout << "Invalid number of seats to book" << endl;
 		}
 	}
 
@@ -196,7 +197,7 @@ public:
 		}
 
 		if (!booked) {
-			cout << "\nNo seats have been booked yet.";
+			cout << "\nNo seats have been booked yet";
 		}
 
 		cout << endl;
@@ -204,10 +205,10 @@ public:
 	// Function to check if a seat is booked
 	bool isSeatBooked(int seatNumber) const {
 		if (seatNumber > 0 && seatNumber <= nr_seats) {
-			return seatStatus[seatNumber - 1]; // Adjusting for zero-based indexing
+			return seatStatus[seatNumber - 1]; 
 		}
 		else {
-			cout << "Invalid seat number." << endl;
+			cout << "Invalid seat number" << endl;
 			return false;
 		}
 	}
@@ -522,39 +523,66 @@ public:
 
 int main() {
 
+	int seats, rows, seatsPerRow;
+	char zones[100];
+
+	cout << "Enter number of seats: ";
+	cin >> seats;
+
+	cout << "Enter number of rows: ";
+	cin >> rows;
+
+	cout << "Enter zones: ";
+	cin.ignore(); // Ignore the newline character in the input buffer
+	cin.getline(zones, 100); // Read the entire line for zones
+
+	cout << "Enter number of seats per row: ";
+	cin >> seatsPerRow;
+
+	// Create a Location object based on user input
+	Location c7(seats, rows, zones, seatsPerRow);
+
+	// Now you can use c1 for further operations or display details
+	cout << "\nLocation details:\n";
+	cout << "Number of seats: " << c7.getnr_seats() << endl;
+	cout << "Number of rows: " << c7.getnr_rows() << endl;
+	cout << "Zone: " << c7.getzones() << endl;
+	cout << "Number of seats per row: " << c7.getnrOfSeatsPerRow() << endl;
+
+	//FILES
 	//location object
 	Location c1(50, 50, "vip", 10);//constructor with parameters
-	Location c2 = c1;//copy constructor
-	Location c3;//default constructor
+	//Location c2 = c1;//copy constructor
+	//Location c3;//default constructor
 
 	////location details
-	cout << "Total number of seats: " << c1.getnr_seats() << endl;
+	/*cout << "Total number of seats: " << c1.getnr_seats() << endl;
 	cout << "Total number of rows: " << c1.getnr_rows() << endl;
 	cout << "Zones: " << c1.getzones() << endl;
 	cout << "Number of seats per row: " << c1.getnrOfSeatsPerRow() << endl;
 
-	cout << "\nNumber of seats in c3 is: " << c3.getnr_seats() << endl; //test default  constructor
+	c*///out << "\nNumber of seats in c3 is: " << c3.getnr_seats() << endl; //test default  constructor
 
 	//operator +=
-	Location c4;
-	c4.setnr_seats(10);
-	cout << "\nInitial number of seats: " << c4.getnr_seats() << endl;
+	//Location c4;
+	//c4.setnr_seats(10);
+	//cout << "\nInitial number of seats: " << c4.getnr_seats() << endl;
 
-	c4 += 5; // Adding 5 more seats
-	cout << "Updated number of seats after adding: " << c4.getnr_seats() << endl;
+	//c4 += 5; // Adding 5 more seats
+	//cout << "Updated number of seats after adding: " << c4.getnr_seats() << endl;
 
 	//operator -=
-	Location c5;
-	c5.setnr_seats(10);
-	cout << "\nInitial number of seats: " << c5.getnr_seats() << endl;
+	//Location c5;
+	//c5.setnr_seats(10);
+	//cout << "\nInitial number of seats: " << c5.getnr_seats() << endl;
 
-	c5 -= 5;//removing 5 seats
-	cout << "Updated number of seats after removing: " << c5.getnr_seats() << endl;
+	//c5 -= 5;//removing 5 seats
+	//cout << "Updated number of seats after removing: " << c5.getnr_seats() << endl;
 
 	
 
 	Date date(0, 0, 0, 0, 0);
-	Date date1 = date;//copy constructor
+	//Date date1 = date;//copy constructor
 
 	// Set the date
 	int day, month, year, hour, minute;
@@ -609,19 +637,19 @@ int main() {
 	cout << "Ticket ID: " << ticket.getTicketID() << endl;
 
 	//test the operator +
-	generateticket ticket1(1001);
-	generateticket ticket2(2002);
+	//generateticket ticket1(1001);
+	//generateticket ticket2(2002);
 
-	generateticket ticket3 = ticket1 + ticket2;
+	/*generateticket ticket3 = ticket1 + ticket2;
 	cout << "\nTicket ID 1: " << ticket1.getTicketID() << endl;
 	cout << "Ticket ID 2: " << ticket2.getTicketID() << endl;
-	cout << "The sum between ticket ID 1 and ticket ID 2: " << ticket3.getTicketID() << endl;
+	cout << "The sum between ticket ID 1 and ticket ID 2: " << ticket3.getTicketID() << endl;*/
 
 	//test the operator =
-	ticket2 = ticket1;
+	/*ticket2 = ticket1;
 	cout << "\nTicket 2 takes the ID of ticket 1" << endl;
 	cout << "Ticket 1 ID: " << ticket1.getTicketID() << endl;
-	cout << "Ticket 2 ID: " << ticket2.getTicketID() << endl;
+	cout << "Ticket 2 ID: " << ticket2.getTicketID() << endl;*/
 
 	// Example usage of setTicketID function
 	//generateticket ticket4;
@@ -631,28 +659,39 @@ int main() {
 	//cout << "\nNew Ticket ID: " << ticket.getTicketID() << endl;
 
 	// Book seats
-	c1.bookSeats(5); // Try booking 5 seats
+	//c1.bookSeats(5); // Try booking 5 seats
 
 	// Check available seats
-	int available = c1.findAvailableSeats();
-	cout << "Available seats after booking: " << available << endl;
+	//int available = c1.findAvailableSeats();
+	//cout << "Available seats after booking: " << available << endl;
 
-	c1.bookSeats(50); // Try booking 50 seats
+	//c1.bookSeats(50); // Try booking 50 seats
 
 	// Check available seats
-	available = c1.findAvailableSeats();
-	cout << "\nAvailable seats after booking: " << available << endl;
+	//available = c1.findAvailableSeats();
+	//cout << "\nAvailable seats after booking: " << available << endl;
 
 
 	// Display booked seats for location c1
-	c1.displayBookedSeats();
+	//c1.displayBookedSeats();
 
 	//c1.bookSeats(10);
+
+	int seatsToBook;
+	cout << "\nEnter the number of seats to book: ";
+	cin >> seatsToBook;
+
+	c1.bookSeats(seatsToBook); // Book the specified number of seats
+
+	// Display available seats after booking
+	int availableSeats = c1.findAvailableSeats();
+	cout << "Available seats after booking: " << availableSeats << endl;
+
 
 	Location c6(100, 50, "normal", 10);
 
 	int seatToCheck;
-	cout << "Enter the seat number you want to check: ";
+	cout << "\nEnter the seat number you want to check: ";
 	cin >> seatToCheck;
 
 	//seatToCheck = 2; // Seat number to check
@@ -663,41 +702,76 @@ int main() {
 		cout << "Seat " << seatToCheck << " is available." << endl;
 	}
 
-	//FILES
-	ofstream outFile("oop.exe data.txt"); // Create an output file stream
+	//Location locdetails; // Create a Location object
 
-	if (outFile.is_open()) {
-		// Writing Location object details
-		outFile << "Location details:" << endl;
-		outFile << "Number of seats: " << c6.getnr_seats() << endl;
-		outFile << "Number of rows: " << c6.getnr_rows() << endl;
-		outFile << "Zone: " << c6.getzones() << endl;
-		outFile << "Number of seats per row: " << c6.getnrOfSeatsPerRow() << endl;
+	//// Input location details 
+	//cout << "Enter number of seats: ";
+	//int seats;
+	//cin >> seats;
+	//locdetails.setnr_seats(seats);
 
-		// Writing Date object details
-		outFile << "\nDate details:" << endl;
-		outFile << "Date: " << date.getDay() << "/" << date.getMonth() << "/" << date.getYear()
-			<< " " << date.getHour() << ":" << date.getMinute() << endl;
+	//cout << "Enter number of rows: ";
+	//int rows;
+	//cin >> rows;
+	//locdetails.setnr_rows(rows);
 
-		// Writing Event object details
-		outFile << "\nEvent details:" << endl;
-		outFile << "Event name: " << event.geteventName() << endl;
-		outFile << "Event date: " << event.geteventDate().getDay() << "/"
-			<< event.geteventDate().getMonth() << "/" << event.geteventDate().getYear()
-			<< " " << event.geteventDate().getHour() << ":" << event.geteventDate().getMinute() << endl;
+	//cout << "Enter zones: ";
+	//string zones;
+	//getline(cin >> ws, zones); // Read the entire line, including spaces
+	//locdetails.setzones(zones.c_str());
+	//cout << "Enter number of seats per row: ";
+	//int seatsPerRow;
+	//cin >> seatsPerRow;
+	//locdetails.setnrOfSeatsPerRow(seatsPerRow);
 
-		// Writing generateticket object details
-		outFile << "\nTicket details:" << endl;
-		outFile << "Ticket ID: " << ticket.getTicketID() << endl;
+	
 
-		outFile.close(); // Close the file
+	//READ FROM A FILE
+
+	ifstream inFile("display_details.txt",ios::in);
+
+	if (inFile.is_open()) {
+		// Read data for Location
+		int nr_seats, nr_rows, nrOfSeatsPerRow;
+		string zones;
+
+		inFile >> nr_seats >> nr_rows >> zones >> nrOfSeatsPerRow;
+		Location location(nr_seats, nr_rows, zones.c_str(), nrOfSeatsPerRow);
+
+		// Read data for Date
+		int day, month, year, hour, minute;
+		inFile >> day >> month >> year >> hour >> minute;
+		Date eventDate(day, month, year, hour, minute);
+
+		// Read data for Event
+		inFile.ignore(); // Ignore the newline character
+		string eventName;
+		getline(inFile, eventName);
+
+		Event event(eventName);
+		event.seteventDate(eventDate);
+
+		// Read data for generateticket
+		int ticketID;
+		inFile >> ticketID;
+		generateticket ticket(ticketID);
+
+		// Display or use the read data as needed
+		cout << "\nLocation details:\n" << location << endl;
+		cout << "Event details:\n";
+		cout << "Event name: " << event.geteventName() << endl;
+		cout << "Event date: " << event.geteventDate().getDay() << "/" << event.geteventDate().getMonth() << "/"
+			<< event.geteventDate().getYear() << " " << event.geteventDate().getHour() << ":"
+			<< event.geteventDate().getMinute() << endl;
+		cout << "Ticket ID: " << ticket.getTicketID() << endl;
+
+		inFile.close();
 	}
 	else {
-		cout << "Unable to open file for writing." << endl;
+		cout << "Unable to open file for reading." << endl;
 	}
-	
-	
-	
+
+
 
 	return 0;
 }
