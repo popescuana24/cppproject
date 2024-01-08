@@ -41,14 +41,13 @@ public:
 		this->zones = new char[strlen(zones) + 1];
 		strcpy_s(this->zones, strlen(zones) + 1, zones);
 
-		//seatStatus = new bool[nr_seats];
-		//memset(seatStatus, false, nr_seats);
+		
 
-		seats = new bool* [nr_rows];
+		this->seats = new bool* [nr_rows];
 		for (int i = 0; i < nr_rows; ++i) {
 			seats[i] = new bool[nr_seats];
 			for (int j = 0; j < nr_seats; ++j) {
-				seats[i][j] = false; // Initialize seats as unbooked (false)
+				seats[i][j] = false; // Initialize seats as unbooked 
 			}
 		}
 
@@ -160,70 +159,7 @@ public:
 		}
 	}
 
-	// Function to book seats
-	//void bookSeats(int seatsToBook) {
-	//	if (seatsToBook > 0) {
-	//		int availableSeats = findAvailableSeats(); // Check available seats
-	//		if (seatsToBook <= availableSeats) {
-	//			int seatsBooked = 0;
-	//			for (int i = 0; i < nr_seats && seatsBooked < seatsToBook; i++) {
-	//				if (!seatStatus[i]) { // If seat is available
-	//					seatStatus[i] = true; // Mark seat as booked
-	//					seatsBooked++;
-	//					cout << "\nSeat " << i + 1 << " booked" << endl; // Display the booked seat
-	//				}
-	//			}
-	//			cout << seatsBooked << " seats successfully booked!" << endl;
-	//		}
-	//		else {
-	//			cout << "Not enough available seats" << endl;
-	//		}
-	//	}
-	//	else {
-	//		cout << "Invalid number of seats to book" << endl;
-	//	}
-	//}
-
-
-	// Function to find available seats
-	//int findAvailableSeats() {
-	//	int availableSeats = 0;
-	//	for (int i = 0; i < nr_seats; i++) {
-	//		if (!seatStatus[i]) { // Count available seats
-	//			availableSeats++;
-	//		}
-	//	}
-	//	return availableSeats;
-	//}
-
-	// Function to display booked seats
-	/*void displayBookedSeats() {
-		cout << "\nBooked Seats: ";
-		bool booked = false;
-
-		for (int i = 0; i < nr_seats; ++i) {
-			if (seatStatus[i]) {
-				cout << i + 1 << " ";
-				booked = true;
-			}
-		}
-
-		if (!booked) {
-			cout << "\nNo seats have been booked yet";
-		}
-
-		cout << endl;
-	}*/
-	// Function to check if a seat is booked
-	/*bool isSeatBooked(int seatNumber) const {
-		if (seatNumber > 0 && seatNumber <= nr_seats) {
-			return seatStatus[seatNumber - 1];
-		}
-		else {
-			cout << "Invalid seat number" << endl;
-			return false;
-		}
-	}*/
+	
 
 
 	// Method to book a specific seat
@@ -567,6 +503,8 @@ public:
 
 
 };
+
+
 
 
 
