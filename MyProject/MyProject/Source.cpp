@@ -81,7 +81,7 @@ public:
 			delete[] zones;
 			zones = nullptr;
 		}
-		//delete[] seatStatus;
+		
 
 		for (int i = 0; i < nr_rows; ++i) {
 			delete[] seats[i];
@@ -116,12 +116,12 @@ public:
 
 	virtual void setnr_seats(int x) {
 		if (x > 0) {
-			nr_seats = x; // Update the number of seats
+			nr_seats = x; 
 		}
 		else {
 			cout << "Invalid number of seats!" << endl;
 		}
-		// Additional logic, if any, related to setting seats
+		
 	}
 
 	void setnr_rows(int y) {
