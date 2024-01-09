@@ -742,7 +742,7 @@ int main() {
 		cin >> event;
 
 		// Output using <<
-		cout << "\n[ EVENT DETAILS ]\n" << event << endl;
+		cout << "\n[ TICKET DETAILS ]\n" << event << endl;
 
 		// Creating a generateticket object
 		generateticket ticket;
