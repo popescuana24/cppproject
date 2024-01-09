@@ -530,7 +530,7 @@ public:
 	// Override function from Location
 	void setnr_seats(int x) override {
 		if (x >= 5) {
-			Location::setnr_seats(x); // Call base class function to set seats
+			Location::setnr_seats(x); 
 			reservations = 0; // Reset reservations if seats are updated
 		}
 		else {
@@ -661,7 +661,7 @@ int main() {
 	//int newID = 9999; // Replace this with your desired ID
 	//ticket.setTicketID(newID);
 
-	//cout << "\nNew Ticket ID: " << ticket.getTicketID() << endl;
+	
 
 
 	int key;
@@ -717,8 +717,7 @@ int main() {
 		}
 
 
-
-		// Check if a seat is booked
+       // Check if a seat is booked
 		int rowToCheck, seatToCheck;
 
 		cout << "\nEnter another row number to check if it's available: ";
