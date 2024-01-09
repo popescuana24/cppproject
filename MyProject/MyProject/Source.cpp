@@ -8,7 +8,7 @@ using namespace std;
 
 class Location {
 private:
-	int nr_seats = 0;//nr total locuri
+	int nr_seats;
 	int nr_rows;//nr randuri
 	char* zones;//zonele
 	int nrOfSeatsPerRow;
@@ -41,7 +41,7 @@ public:
 		this->zones = new char[strlen(zones) + 1];
 		strcpy_s(this->zones, strlen(zones) + 1, zones);
 
-		
+
 
 		this->seats = new bool* [nr_rows];
 		for (int i = 0; i < nr_rows; ++i) {
@@ -114,14 +114,14 @@ public:
 
 	//setters
 
-	void setnr_seats(int x) {
-		if (x >= MIN_SEATS) {
-			this->nr_seats = x;
+	virtual void setnr_seats(int x) {
+		if (x > 0) {
+			nr_seats = x; // Update the number of seats
 		}
 		else {
-			throw  exception("Invalid number of seats!");
-
+			cout << "Invalid number of seats!" << endl;
 		}
+		// Additional logic, if any, related to setting seats
 	}
 
 	void setnr_rows(int y) {
@@ -159,7 +159,7 @@ public:
 		}
 	}
 
-	
+
 
 
 	// Method to book a specific seat
@@ -239,6 +239,14 @@ public:
 		cout << "Enter number of seats per row: ";
 		in >> seatsPerRow;
 		loc.setnrOfSeatsPerRow(seatsPerRow);
+
+		loc.seats = new bool* [rows];
+		for (int i = 0; i < rows; ++i) {
+			loc.seats[i] = new bool[seats];
+			for (int j = 0; j < seats; ++j) {
+				loc.seats[i][j] = false; // Initialize seats as unbooked
+			}
+		}
 
 		delete[] zones;
 
@@ -423,7 +431,7 @@ public:
 		return out;
 	}
 
-	// Overloading stream extraction operator >>
+	// Overloading  operator >>
 	friend istream& operator>>(istream& in, Event& event) {
 		cout << "\nEnter the event name: ";
 		getline(in >> ws, event.eventName);
@@ -504,8 +512,37 @@ public:
 
 };
 
+class ReservedLocation : public Location {
+private:
+	int reservations;
+
+public:
+	ReservedLocation() : reservations(0) {}
+
+	ReservedLocation(int nr_seats, int nr_rows, const char* zones, int nrOfSeatsPerRow, int reservations)
+		: Location(nr_seats, nr_rows, zones, nrOfSeatsPerRow), reservations(reservations) {}
 
 
+	void addReservation(int num) {
+		reservations += num;
+	}
+
+	// Override function from Location
+	void setnr_seats(int x) override {
+		if (x >= 5) {
+			Location::setnr_seats(x); // Call base class function to set seats
+			reservations = 0; // Reset reservations if seats are updated
+		}
+		else {
+			throw exception("Invalid number of seats!");
+		}
+	}
+
+	//  functionality 
+	void displayReservations() {
+		cout << "Number of reservations: " << reservations << endl;
+	}
+};
 
 
 int main() {
@@ -632,6 +669,7 @@ int main() {
 	cout << "\nPRESS KEY 1 if you want to enter the data from the console\n";
 	cout << "PRESS KEY 2 if you want to read the data from a text file\n";
 	cout << "PRESS KEY 3 if you want to EXIT\n";
+	cout << "PRESS KEY 4 if you want to make a reservation\n";
 	cout << "\nEnter your choice: ";
 	cin >> choice;
 
@@ -672,28 +710,30 @@ int main() {
 
 		// Book the specified seat using bool** seats
 		if (c9.bookSpecificSeat(rowToBook, seatToBook)) {
-			cout << " ROW " << rowToBook << " SEAT " << seatToBook << " successfully booked!" << endl;
+			cout << "ROW " << rowToBook << " SEAT " << seatToBook << " successfully booked!" << endl;
 		}
 		else {
-			cout << " ROW " << rowToBook << " SEAT " << seatToBook << " is already booked!" << endl;
+			cout << "ROW " << rowToBook << " SEAT " << seatToBook << " is already booked!" << endl;
 		}
 
+
+
 		// Check if a seat is booked
-		//int rowToCheck, seatToCheck;
+		int rowToCheck, seatToCheck;
 
-		//cout << "\nEnter row number to check: ";
-		///cin >> rowToCheck;
+		cout << "\nEnter another row number to check if it's available: ";
+		cin >> rowToCheck;
 
-		//cout << "Enter seat number to check: ";
-		//cin >> seatToCheck;
+		cout << "Enter another seat number to check if it's available: ";
+		cin >> seatToCheck;
 
 		// Check if the specified seat is booked
-		//if (c9.isSeatBooked(rowToCheck, seatToCheck)) {
-			//cout << "Seat at Row " << rowToCheck << " Seat " << seatToCheck << " is already booked." << endl;
-		//}
-		//else {
-			//cout << "Seat at Row " << rowToCheck << " Seat " << seatToCheck << " is available." << endl;
-		//}
+		if (c9.isSeatBooked(rowToCheck, seatToCheck)) {
+			cout << "Row " << rowToCheck << " Seat " << seatToCheck << " is already booked." << endl;
+		}
+		else {
+			cout << "Row " << rowToCheck << " Seat " << seatToCheck << " is available." << endl;
+		}
 
 		cout << "\nENTER THE EVENT DETAILS!" << endl;
 		Event event;
@@ -763,9 +803,45 @@ int main() {
 	else if (choice == 3) {
 		cout << "EXIT" << endl;
 	}
-	
+	else if (choice == 4) {
+		// Create and use ReservedLocation
+		int seats, rows, seatsPerRow, reservations;
+		char zones[100];
+		int seatToBook, rowToBook;
+
+		cout << "\nCREATE A RESERVATION" << endl;
+		cout << "Enter number of seats: ";
+		cin >> seats;
+
+		cout << "Enter number of rows: ";
+		cin >> rows;
+
+		cout << "Enter zones: ";
+		cin.ignore();
+		cin.getline(zones, 100);
+
+		cout << "Enter number of seats per row: ";
+		cin >> seatsPerRow;
+
+		cout << "Enter number of reservations: ";
+		cin >> reservations;
+
+		ReservedLocation reservedLocation(seats, rows, zones, seatsPerRow, reservations);
+
+		// Display reserved location details
+		cout << "\n[ RESERVED LOCATION DETAILS ]\n";
+		cout << reservedLocation << endl;
+		cout << "Enter row number you want to book: ";
+		cin >> rowToBook;
+
+		cout << "Enter seat number you want to book: ";
+		cin >> seatToBook;
 
 
-     return 0;
+	}
+
+
+
+	return 0;
 }
 
