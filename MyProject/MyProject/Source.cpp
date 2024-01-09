@@ -664,16 +664,16 @@ int main() {
 	//cout << "\nNew Ticket ID: " << ticket.getTicketID() << endl;
 
 
-	int choice;
+	int key;
 	cout << "WELCOME TO THE MENU!\n";
 	cout << "\nPRESS KEY 1 if you want to enter the data from the console\n";
 	cout << "PRESS KEY 2 if you want to read the data from a text file\n";
 	cout << "PRESS KEY 3 if you want to EXIT\n";
-	cout << "PRESS KEY 4 if you want to make a reservation\n";
+	
 	cout << "\nEnter your choice: ";
-	cin >> choice;
+	cin >> key;
 
-	if (choice == 1) {
+	if (key == 1) {
 		int seats, rows, seatsPerRow;
 		char zones[100];
 
@@ -752,7 +752,7 @@ int main() {
 		cout << "Seat: " << seatToBook << endl;
 		cout << "Row: " << rowToBook << endl;
 	}
-	else if (choice == 2) {
+	else if (key == 2) {
 		//READING FROM A TEXT FILE
 		ifstream inFile("display_details.txt", ios::in);
 
@@ -800,46 +800,10 @@ int main() {
 		}
 	}
 	//EXIT THE PROGRAM
-	else if (choice == 3) {
-		cout << "EXIT" << endl;
+	else if (key == 3) {
+		cout << "PRESS ANY KEY TO EXIT" << endl;
 	}
-	else if (choice == 4) {
-		// Create and use ReservedLocation
-		int seats, rows, seatsPerRow, reservations;
-		char zones[100];
-		int seatToBook, rowToBook;
-
-		cout << "\nCREATE A RESERVATION" << endl;
-		cout << "Enter number of seats: ";
-		cin >> seats;
-
-		cout << "Enter number of rows: ";
-		cin >> rows;
-
-		cout << "Enter zones: ";
-		cin.ignore();
-		cin.getline(zones, 100);
-
-		cout << "Enter number of seats per row: ";
-		cin >> seatsPerRow;
-
-		cout << "Enter number of reservations: ";
-		cin >> reservations;
-
-		ReservedLocation reservedLocation(seats, rows, zones, seatsPerRow, reservations);
-
-		// Display reserved location details
-		cout << "\n[ RESERVED LOCATION DETAILS ]\n";
-		cout << reservedLocation << endl;
-		cout << "Enter row number you want to book: ";
-		cin >> rowToBook;
-
-		cout << "Enter seat number you want to book: ";
-		cin >> seatToBook;
-
-
-	}
-
+	
 
 
 	return 0;
